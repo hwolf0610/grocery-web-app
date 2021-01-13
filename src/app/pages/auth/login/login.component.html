@@ -1,0 +1,95 @@
+<div class="auth-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9 offset-md-1">
+            <img src="assets/images/webapp.png" class="showPointer logo" [routerLink]="['/home']" />
+
+            <form (ngSubmit)="validateUserCredentials()" [formGroup]="loginForm" autocomplete="off">
+              <div class="form-group" *ngIf="!isAccountNotVerified && !isLinkSent">
+                <label>{{ "MOBILE_NUMBER" | translate }}/{{"EMAIL"| translate}} <span
+                    style="color: red;">*</span></label>
+                <input type="mobileNo" class="form-control barlow-regular text-normal color-b" id="exampleInputmobile1"
+                  aria-describedby="emailHelp" placeholder="{{ 'ENTER_YOUR_MOBILE_NUMBER' | translate }}"
+                  formControlName="userName" />
+
+              </div>
+
+              <div class="form-group relative" *ngIf="!isAccountNotVerified && !isLinkSent">
+                <label>{{ "PASSWORD" | translate }} <span style="color: red;">*</span></label>
+                <input type="password" class="form-control  barlow-regular text-normal color-b" id="exampleInputpasswd"
+                  aria-describedby="emailHelp" placeholder="{{ 'ENTER_PASSWORD' | translate }}"
+                  formControlName="password" />
+                <span class="help-block" *ngIf="loginForm.controls['password'].hasError('minlength')">
+                  <small class="text-danger">{{ "MIN_PASS" | translate }}</small>
+                </span>
+                <span class="help-block" *ngIf="loginForm.controls['password'].hasError('maxlength')">
+                  <small class="text-danger">{{ "MAX_PASS" | translate }}</small>
+                </span>
+                <!--                <img src="assets/icons/eye.png" class="absolute eye"/>-->
+              </div>
+
+              <br /><br />
+              <button type="submit" class="btn btn-warning sign-btn" [disabled]="loginForm.invalid"
+                *ngIf="!isAccountNotVerified && !isLinkSent">
+                {{ "LOG_IN" | translate }}
+              </button>
+              <p *ngIf="isAccountNotVerified">{{"OTP_NOT_VERIFIED" | translate}}</p>
+              <button type="button" class="btn btn-warning sign-btn" *ngIf="isAccountNotVerified"
+                (click)="resendVerificationOTPMessage()">
+                {{ "RESEND_OTP" | translate }}
+              </button>
+            </form>
+
+            <!-- start -->
+
+
+            <!-- <h6 class="text-medium barlow-regular color-b-c">
+                {{ "OTP_REG" | translate }}
+                {{ "PLEASE_VERIFY_THE_OTP" | translate }}
+                {{ "TO_RESET_YOUR_PASSWORD" | translate }}
+              </h6> -->
+
+            <form (ngSubmit)="verifyOTP()" #otpForm="ngForm" autocomplete="off"
+              *ngIf="verificationLevels.emailVerified && !verificationLevels.otpVerified">
+              <p class="color-green" translate>{{ "OTP_SENT" | translate }}</p>
+              <div class="form-group">
+                <label for="exampleInputEmail1">{{ "OTP_ENTER" | translate }}<span
+                    style="color: #ff0000;">*</span></label>
+                <input type="text" class="form-control  barlow-regular text-normal color-b" id="otpInput"
+                  aria-describedby="emailHelp" placeholder="{{ 'OTP_ENTER' | translate }}" required name="OTP"
+                  [maxLength]="6" [minLength]="4" [(ngModel)]="otpInfo.otp" />
+
+              </div>
+
+              <br /><br />
+              <button type="submit" [disabled]="otpForm.invalid" class="btn btn-warning sign-btn">
+                {{ "VERIFY_OTP" | translate }}
+              </button>
+            </form>
+            <!-- end -->
+
+            <div class="row mt-4">
+              <div class="col-md-6 col-6">
+                <h6 class="text-small color-b-c barlow-regular">
+                  {{ "NO_ACCOUNT" | translate }}<span class="text-normal color-primary pointer"
+                    [routerLink]="['/register']">
+                    &nbsp; {{ "SIGN_UP" | translate }}</span>
+                </h6>
+              </div>
+              <div class="col-md-6 col-6 text-right">
+                <h6 class="text-small color-b-c barlow-regular pointer" [routerLink]="['/forgot-password']">
+                  {{ "FORGOT_PASSWORD" | translate }}
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 welcome-banner text-center">
+        <img src="assets/images/register.png" class="img-fluid banner-img" />
+      </div>
+    </div>
+  </div>
+</div>

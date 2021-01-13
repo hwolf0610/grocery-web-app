@@ -1,0 +1,88 @@
+.side-menu-page {
+  // position: fixed;
+  @media screen and (max-width: 1400px) {
+    position: initial;
+  }
+  @media screen and (max-width: 568px) {
+    display: none !important;
+  }
+  .side-logo {
+    width: 200px;
+    padding-left: 1.89em;
+    // width: 150px;
+    // padding-left: 2.5rem;
+    @media screen and (max-width: 768px) {
+      width: 120px;
+      padding-left: 0rem;
+    }
+  }
+  .title {
+    
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding-left: 2rem;
+    @media screen and (max-width: 568px) {
+      padding-left: 2rem !important;
+    }
+    @media screen and (max-width: 768px) {
+      padding-left: 2px;
+    }
+    &:hover,
+    &:focus {
+      background-color: $primary;
+    }
+
+    margin-bottom: 1rem;
+  }
+  .logout-btn {
+    position: fixed;
+    bottom: 60px;
+    width: 15%;
+    @media screen and (max-width: 568px) {
+      position: initial;
+      width: 100%;
+      // justify-content: space-around;
+      // height: 1024px;
+    }
+  }
+
+  .categories {
+    // display: grid;
+    // justify-content: space-around;
+    height: 1024px;
+    @media screen and (max-width: 768px) {
+      height: auto !important;
+      // justify-content: space-around;
+      // height: 1024px;
+    }
+    @media screen and (max-width: 1366px) {
+      height: 1366px !important;
+      // justify-content: space-around;
+      // height: 1024px;
+    }
+  }
+
+  .side-menu-width {
+    position: fixed;
+    width: 240px;
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    @include scrollBarThin;
+    @media screen and (max-width: 568px) {
+      width: 100% !important;
+      position: initial;
+    }
+    @media screen and (max-width: 768px) {
+      width: 148px;
+    }
+    @media screen and (max-width: 1024px) {
+      // width: 200px;
+    }
+  }
+  .active {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    background-color: $primary !important;
+  }
+}

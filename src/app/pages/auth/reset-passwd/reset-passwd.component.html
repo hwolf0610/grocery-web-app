@@ -1,0 +1,81 @@
+<div class="auth-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9 offset-md-1">
+            <img src="assets/icons/logo.png" class="logo" />
+
+            <h1 class="h1xl color-b barlow-semibold">
+              Reset Password
+            </h1>
+
+            <form>
+              <div class="form-group relative">
+                <label for="exampleInputEmail1"
+                  >Password <span style="color: red;">*</span></label
+                >
+                <input
+                  type="paswd"
+                  class="form-control  barlow-regular text-normal color-b"
+                  id="exampleInputpasswd"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                />
+                <small id="emailHelp" class="form-text text-small  color-green"
+                  ><img src="assets/icons/tick.png" /> Nice! super strong
+                  password</small
+                >
+                <img src="assets/icons/eye.png" class="absolute eye" />
+              </div>
+
+              <div class="form-group relative">
+                <label for="exampleInputEmail1"
+                  >Re-enter Password <span style="color: red;">*</span></label
+                >
+                <input
+                  type="paswd"
+                  class="form-control  barlow-regular text-normal color-b barlow-regular text-normal color-b"
+                  id="exampleInputrepasswd"
+                  aria-describedby="emailHelp"
+                  placeholder="Enter email"
+                />
+
+                <img src="assets/icons/eye.png" class="absolute eye" />
+              </div>
+            </form>
+            <br />
+
+            <h6 class="text-md color-b-c barlow-regular">Reset Code</h6>
+
+            <div class="row">
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-warning sign-btn my-4"
+              [routerLink]="['/login']"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 welcome-banner text-center">
+        <img src="assets/images/reset.png" class="img-fluid banner-img " />
+      </div>
+    </div>
+  </div>
+</div>

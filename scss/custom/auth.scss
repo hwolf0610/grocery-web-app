@@ -1,0 +1,198 @@
+.auth-page {
+  .form-control {
+    padding-right: 3.5rem;
+    height: 58px;
+    background: $light-blue;
+    border-radius: 5px;
+    border: none;
+    &:focus {
+      box-shadow: none;
+      border: 1px solid $primary;
+      background-color: $light-blue;
+    }
+  }
+  // .input-country {
+  //   margin-top: 30px;
+  // }
+  label {
+    color: $black-c;
+    font-size: 15px;
+    font-family: BarlowRegular;
+  }
+  .logo {
+    width: 208px;
+    height: 36px;
+    // padding: 3rem 0 4rem 0;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .welcome-banner {
+    background-color: $light-blue;
+    padding: 7rem 0 0 0;
+    height: 800px;
+  }
+  .login-btn {
+    height: 72px;
+    width: 100%;
+    font-size: 30px;
+    font-family: BarlowMedium;
+    color: $primary;
+    &:hover {
+      background-color: $primary;
+      border-color: $primary;
+    }
+  }
+
+  .sign-btn {
+    background-color: $primary;
+    height: 72px;
+    width: 100%;
+    // width: 67%;
+    font-size: 30px;
+    font-family: BarlowMedium;
+    color: $black;
+    &:hover {
+      background-color: $primary;
+      border-color: $primary;
+    }
+  }
+  .banner-img {
+    height: auto;
+  }
+  .social-btn {
+    height: 55px;
+    background-color: $fb-color;
+    color: $white;
+    font-family: BarlowRegular;
+    padding: 0 4rem;
+    &:hover {
+      color: $white;
+    }
+  }
+  .eye {
+    top: 50px;
+    right: 14px;
+  }
+
+  .customcheck {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  .customcheck input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 24px;
+    width: 24px;
+    border: 1px solid $black-c;
+    border-radius: 2px;
+    background: white;
+  }
+
+  /* When the checkbox is checked, add a blue background */
+  .customcheck input:checked ~ .checkmark {
+    background-color: $primary;
+  }
+
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+
+  /* Show the checkmark when checked */
+  .customcheck input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .customcheck .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 7px;
+    height: 14px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .selectVal {
+    height: 53px;
+    width: 83px;
+    background-color: $light-blue;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+  }
+  .close {
+    top: 30px;
+    right: 14px;
+  }
+  .reset-block {
+    text-align: center;
+    height: 113px;
+    width: 104px;
+    border: none;
+    background-color: $light-blue;
+    border-radius: 5px;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.owl-theme .owl-nav [class*="owl-"] {
+  color: #fff;
+  font-size: 14px;
+  margin: 5px;
+  padding: 15px 15px !important;
+  background: transparent !important;
+  display: inline-block;
+  cursor: point;
+  border-radius: 50px !important;
+  &:hover {
+    background: transparent !important;
+  }
+}
+
+// .owl-theme .owl-nav {
+//   margin-top: 10px;
+//   position: absolute;
+//   top: -58px;
+//   right: 116px;
+// }
+
+.owl-theme .owl-nav {
+  margin-top: 10px;
+  position: absolute;
+  top: -7.3rem;
+  right: 6.5rem;
+  @media screen and (max-width: 600px) {
+    right: 2px !important;
+  }
+  @media screen and (max-width: 768px) {
+    right: 5rem;
+  }
+  @media screen and (max-width: 1024px) {
+    right: 3.5rem;
+  }
+}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45">
+  <g id="logout" transform="translate(-13428 157)">
+    <rect id="Rectangle_1327" data-name="Rectangle 1327" width="45" height="45" transform="translate(13428 -157)" fill="none"/>
+    <g id="power-button" transform="translate(13426 -148)">
+      <g id="Group_2632" data-name="Group 2632" transform="translate(23.696)">
+        <g id="Group_2631" data-name="Group 2631" transform="translate(0)">
+          <rect id="Rectangle_1389" data-name="Rectangle 1389" width="2" height="12" fill="#f44242" stroke="#f44242" stroke-width="0.5"/>
+        </g>
+      </g>
+      <g id="Group_2634" data-name="Group 2634" transform="translate(11 1.3)">
+        <g id="Group_2633" data-name="Group 2633">
+          <path id="Path_178" data-name="Path 178" d="M34.046,32.79a13.539,13.539,0,0,0-6.24-3.429v2.215A10.989,10.989,0,0,1,35.8,42.015,11.124,11.124,0,0,1,24.5,52.931,11.124,11.124,0,0,1,13.2,42.015a10.989,10.989,0,0,1,7.99-10.439V29.361a13.539,13.539,0,0,0-6.24,3.429,12.738,12.738,0,0,0,0,18.45,13.834,13.834,0,0,0,19.092,0,12.738,12.738,0,0,0,0-18.45Z" transform="translate(-11 -29.361)" fill="#f44242" stroke="#f44242" stroke-width="0.5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

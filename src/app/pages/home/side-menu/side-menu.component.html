@@ -1,0 +1,201 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="row side side-menu-page">
+      <div class="col-md-12 pl-0">
+        <app-header-component></app-header-component>
+
+        <div class="categories">
+          <div class="row">
+            <div class="col-md-12 side-menu-width">
+              <br />
+              <br />
+              <br />
+              <br />
+              <div class="mt-5 pointer" [routerLink]="['/home']" routerLinkActive="active">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/home.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "HOME_PAGE" | translate }}
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/categories']" [routerLinkActive]="['active']">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/categories.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "CATEGORIES" | translate }}
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/products']" [routerLinkActive]="['active']">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/products.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "PRODUCTS" | translate }}
+                </div>
+              </div>
+              <div>
+                <div class="pointer" [routerLink]="['/search']" [routerLinkActive]="['active']">
+                  <div class="text-md barlow-medium color-b pointer title">
+                    <img src="assets/sidebar/search.svg"
+                      class="img-fluid category-icons" />&nbsp;{{ "SEARCH_PRODUCT" | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/cart']" [routerLinkActive]="['active', '/checkout']"
+                *ngIf="isLoggedIn">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/cart.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "MY_CART" | translate }}
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/favourites']" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/fav.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "FAVOURITES" | translate }}
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/orders']" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/orders.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "MY_ORDERS" | translate }}
+                </div>
+              </div>
+              <div class="pointer" [routerLink]="['/profile']" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+                <div class="text-md barlow-medium color-b pointer title">
+                  <img src="assets/sidebar/settings.svg"
+                    class="img-fluid category-icons" />&nbsp;{{ "PROFILE" | translate }}
+                </div>
+              </div>
+              <div class="row pointer" [routerLink]="['/login']" [routerLinkActive]="['active']" *ngIf="isLoggedIn"
+                (click)="clearSessionAndLogout()">
+                <div class="col-md-12">
+                  <div class="text-md barlow-medium color-b pointer title">
+                    <a><img src="assets/sidebar/logout.svg"
+                        class="img-fluid category-icons" />&nbsp;{{ "LOG_OUT" | translate }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="row pointer" *ngIf="!isLoggedIn">
+                <div class="col-md-12">
+                  <div class="text-md barlow-medium color-b pointer title">
+                    <a (click)="createSessionAndLogIn()"><img src="assets/sidebar/login.svg"
+                        class="img-fluid category-icons" />&nbsp;{{ "SIGN_IN" | translate }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <app-footer></app-footer> -->
+  </div>
+</div>
+
+<div class="row py-2 sidemenu-header">
+  <div class="col-md-1 col-8">
+    <button class="btn mobile-menu" name="btnMobileMenu" type="button" id="btnMobileMenu" (click)="mobMenuToggle()">
+      <i class="fa fa-bars fa-2x"></i>
+    </button>
+  </div>
+
+  <div class="col-md-4 col-2 mt-2">
+    <div class="pointer" [routerLink]="['/search']" [routerLinkActive]="['active']">
+      <div class="text-md barlow-medium color-b pointer title">
+        <img src="assets/sidebar/search.svg" class="img-fluid category-icons" />
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 col-2">
+    <div class="pointer" [routerLink]="['/cart']" [routerLinkActive]="['active', '/checkout']" *ngIf="isLoggedIn">
+      <div class="text-md barlow-medium color-b pointer title">
+        <img src="assets/icons/cart.svg" class="img-fluid category-icons" />
+        <span class="badge badge-pill badge-dark cart-items counter" *ngIf="cartLength > 0">{{ cartLength }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="side-menus" [@sideMenuAnimation]="sideMenuState">
+  <!-- <div class="logo">
+    <img src="assets/img/logo.png" alt="ionicfirebaseapp" class="banner-img" />
+  </div> -->
+  <div class="link-wrapper">
+    <div class="categories">
+      <div class="row">
+        <div class="col-md-12 side-menu-width pl-0">
+          <img src="assets/images/webapp.png" class="side-logo-mobile" />
+          <!-- <img [src]="logoUrl" class="side-logo-mobile" *ngIf="logoUrl" /> -->
+          <div class="mt-5 pointer" [routerLink]="['/home']" routerLinkActive="active" (click)="mobMenuToggle()">
+            <div class="text-normal barlow-semibold color-w pointer title pl-3 main-title">
+              <img src="assets/sidebar-icons/my-store.svg" class="img-fluid" />&nbsp; &nbsp; {{
+              "HOME" | translate
+              }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/categories']" [routerLinkActive]="['active']" (click)="mobMenuToggle()">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/categories.svg" class="img-fluid" />&nbsp; &nbsp;
+              {{ "CATEGORIES" | translate }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/products']" [routerLinkActive]="['active']" (click)="mobMenuToggle()">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/products.svg " class="img-fluid" />&nbsp;
+              &nbsp; {{ "PRODUCTS" | translate }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/search']" [routerLinkActive]="['active']">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/search.svg" class="img-fluid category-icons" />&nbsp; &nbsp;
+              {{ "SEARCH_PRODUCT" | translate }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/cart']" [routerLinkActive]="['active', '/checkout']"
+            (click)="mobMenuToggle()" *ngIf="isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/cart.svg" class="img-fluid" />&nbsp; &nbsp; {{
+              "MY_CART" | translate
+              }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/favourites']" [routerLinkActive]="['active']" (click)="mobMenuToggle()"
+            *ngIf="isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/fav.svg" class="img-fluid" />&nbsp; &nbsp; {{
+              "FAVOURITES" | translate
+              }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/orders']" [routerLinkActive]="['active']" (click)="mobMenuToggle()"
+            *ngIf="isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/my-orders.svg" class="img-fluid" />&nbsp; &nbsp; {{
+              "MY_ORDERS" | translate
+              }}
+            </div>
+          </div>
+
+          <div class="pointer" [routerLink]="['/profile']" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title mt-3 pl-3  main-title">
+              <img src="assets/sidebar-icons/settings.svg" class="img-fluid category-icons" />&nbsp; &nbsp;
+              {{ "PROFILE" | translate }}
+            </div>
+          </div>
+          <div class="pointer" [routerLink]="['/login']" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title logout-btn mt-3 mb-3 pl-3  main-title">
+              <a (click)="clearSessionAndLogout()"><img src="assets/sidebar/logout.svg" class="img-fluid" />&nbsp;
+                &nbsp; {{ "LOG_OUT" | translate }}
+              </a>
+            </div>
+          </div>
+          <div class="pointer" *ngIf="!isLoggedIn">
+            <div class="text-normal barlow-semibold color-w pointer title logout-btn mt-3 pl-3 mb-3  main-title">
+              <a (click)="createSessionAndLogIn()"><img src="assets/sidebar/login.svg"
+                  class="img-fluid category-icons" />&nbsp; &nbsp; {{ "SIGN_IN" | translate }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

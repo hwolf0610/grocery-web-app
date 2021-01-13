@@ -1,0 +1,37 @@
+.search-box {
+  .close-form {
+    position: absolute;
+    top: 6.5rem;
+    right: 2rem;
+  }
+
+  .form-search {
+    position: absolute;
+    top: 6.7rem;
+    left: 2rem;
+
+    @media screen and (max-width: 568px) {
+      position: absolute;
+      top: 6.5rem !important;
+      left: 2rem !important;
+      width: 9% !important;
+    }
+  }
+}
+
+.star {
+  position: relative;
+  display: inline-block;
+  color: #212529;
+}
+
+.full {
+  color: white;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: white;
+}

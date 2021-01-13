@@ -1,0 +1,460 @@
+<div class="container-fluid color-lightblue">
+  <div class="row color-lightblue">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div
+      class="col-md-10 col-lg-9 col-xl-10 bg-color-lightblue mt-4 main-bar"
+      *ngIf="cartInfo"
+    >
+      <br /><br />
+      <br />
+      <div class="row mb-5">
+        <div class="col-md-3 col-lg-5 col-xl-3">
+          <h5 class="barlow-medium text-normal color-b mt-4 pb-2 main-title">
+            {{ "CART_SUMMARY" | translate }} ({{ cartInfo.products.length }}
+            {{ "ITEMS" | translate }})
+          </h5>
+          <div class="cart-summary radius-10 bg-white p-3">
+            <div class="row">
+              <div class="col-md-7 col-5">
+                <h6 class="text-md barlow-regular">
+                  {{ "SUB_TOTAL" | translate }}:
+                </h6>
+              </div>
+              <div class="col-md-5 text-right col-7">
+                <h4 class="text-md barlow-bold word-b">
+                  {{
+                    cartInfo.subTotal | currency: currencyCode:"symbol":"1.2-2"
+                  }}
+                </h4>
+              </div>
+            </div>
+            <div class="row" *ngIf="cartInfo.tax > 0">
+              <div class="col-md-8 col-5">
+                <h6 class="text-md barlow-regular">
+                  <span> <img src="assets/icons/sale.png" /></span
+                  >{{ "TAX" | translate }}: ({{ cartInfo.taxInfo.taxName }}
+                  {{ cartInfo.taxInfo.amount + "%" }}):
+                </h6>
+              </div>
+              <div class="col-md-4 text-right col-7">
+                <h4 class="text-md barlow-bold">
+                  {{ cartInfo.tax | currency: currencyCode:"symbol":"1.2-2" }}
+                </h4>
+              </div>
+            </div>
+            <div class="row" *ngIf="cartInfo.couponCode">
+              <div class="col-md-8 col-5">
+                <h6 class="text-md barlow-regular">
+                  {{ "DISCOUNT" | translate }}:
+                </h6>
+              </div>
+              <div class="col-md-4 text-right col-7">
+                <h4 class="text-md barlow-bold">
+                  {{
+                    cartInfo.couponAmount
+                      | currency: currencyCode:"symbol":"1.2-2"
+                  }}
+                </h4>
+              </div>
+            </div>
+            <div class="row" *ngIf="cartInfo.deliveryAddress">
+              <div class="col-md-8 col-5">
+                <h6 class="text-md barlow-regular">
+                  {{ "DELIVERY_CHARGE" | translate }}:
+                </h6>
+              </div>
+              <div class="col-md-4 text-right col-7">
+                <h4 class="text-md barlow-bold">
+                  <ng-container *ngIf="cartInfo.deliveryCharges > 0">
+                    {{
+                      cartInfo.deliveryCharges
+                        | currency: currencyCode:"symbol":"1.2-2"
+                    }}
+                  </ng-container>
+                  <ng-container *ngIf="cartInfo.deliveryCharges == 0">
+                    {{ "FREE" | translate }}
+                  </ng-container>
+                </h4>
+              </div>
+            </div>
+            <hr />
+            <div *ngIf="!cartInfo.couponCode">
+              <h6 class="text-normal barlow-medium main-title">
+                {{ "ADD_COUPON" | translate }}
+              </h6>
+
+              <br />
+              <input
+                type="text"
+                class="form-control text-center"
+                placeholder="{{ 'ENTER_COUPON_CODE' | translate }}"
+                [(ngModel)]="couponCode"
+              />
+              <br />
+
+              <button
+                type="button"
+                [disabled]="couponCode.length === 0"
+                class="btn apply-btn bg-color-primary w-100 barlow-regular color-b"
+                (click)="applyCoupon()"
+              >
+                {{ "APPLY" | translate }}
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn apply-btn bg-color-primary w-100 barlow-regular color-b"
+              (click)="removeCoupon()"
+              *ngIf="cartInfo.couponCode"
+            >
+              {{ "REMOVE_COUPON" | translate }}
+            </button>
+            <br /><br /><br />
+            <br /><br /><br />
+            <hr />
+
+            <div class="row">
+              <div class="col-md-4 col-4">
+                <h6 class="text-md barlow-regular">
+                  {{ "TOTAL" | translate }}
+                </h6>
+              </div>
+              <div class="col-md-8 col-8 text-right">
+                <h4 class="h1sm barlow-medium word-b">
+                  {{
+                    cartInfo.grandTotal
+                      | currency: currencyCode:"symbol":"1.2-2"
+                  }}
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-lg-5 col-xl-4">
+          <h5 class="text-normal barlow-medium color-b mt-4 pb-2 main-title">
+            {{ "CHOOSE_DELIVERY_ADDRESS" | translate }}
+            <span class="color-red">*</span>
+          </h5>
+          <div class="delievry-address radius-10 bg-white p-3">
+            <h6
+              class="text-center color-green"
+              *ngIf="addressList.length === 0"
+            >
+              {{ "NO_ADDRESS" | translate }}
+            </h6>
+            <ng-container *ngFor="let address of addressList; index as a">
+              <div class="custom-control custom-radio">
+                <input
+                  type="radio"
+                  [id]="address._id"
+                  [name]="address._id"
+                  (change)="getDeliveryCharges(address, $event)"
+                  [checked]="selectedAddress === address._id"
+                  class="custom-control-input"
+                />
+                <label
+                  class="custom-control-label barlow-regular color-b-c text-md pointer"
+                  [for]="address._id"
+                  >{{ address.flatNo }},{{ address.apartmentName }},{{
+                    address.address
+                  }}</label
+                >
+              </div>
+              <div class="row text-center">
+                <div class="col-md-5 offset-md-1 col-6">
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark w-100 mt-4"
+                    (click)="openAddressModal(addressModal, address._id)"
+                  >
+                    {{ "EDIT" | translate }}
+                  </button>
+                </div>
+                <div
+                  class="col-md-5 col-6"
+                  *ngIf="selectedAddress !== address._id"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-outline-dark w-100 mt-4"
+                    (click)="deleteAddress(address._id, a)"
+                  >
+                    {{ "DELETE" | translate }}
+                  </button>
+                </div>
+              </div>
+              <br />
+            </ng-container>
+            <br />
+            <hr *ngIf="addressList.length > 0" />
+            <br />
+            <br /><br /><br />
+            <hr />
+            <button
+              type="button"
+              class="btn btn-outline-dark w-100 mb-4 barlow-regular color-b-b"
+              (click)="openAddressModal(addressModal, null)"
+            >
+              {{ "ADD_NEW_ADDRESS" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="col-md-3 col-lg-5 col-xl-3">
+          <h5 class="text-normal barlow-medium color-b mt-4 pb-2 main-title">
+            {{ "CHOOSE_DELIVERY_SLOT" | translate }}
+            <span class="color-red">*</span>
+          </h5>
+          <div class="cart-summary radius-10 bg-white p-3">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <select
+                  class="form-control"
+                  name="workingHours"
+                  ngModel
+                  (change)="showTimeSchedule(workingHour.value)"
+                  #workingHour
+                >
+                  <option disabled translate>CHOOSE_DELIVERY_SLOT</option>
+                  <option *ngFor="let day of workingHours" [value]="day._id">
+                    {{ day.date }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <small
+              class="color-green"
+              *ngIf="deliveryDate && timeSchedulesSlots.length === 0"
+              >{{ "NO_SLOTS" | translate }}&nbsp;{{ deliveryDate }} .</small
+            >
+            <ng-container *ngIf="timeSchedulesSlots.length > 0">
+              <ng-container *ngFor="let slot of timeSchedulesSlots">
+                <div class="row mt-3">
+                  <div class="col-md-8 col-8 mt-2">
+                    <h6 class="text-14 barlow-regular">
+                      {{ slot.slot }}
+                    </h6>
+                  </div>
+                  <div class="col-md-4 text-right col-4">
+                    <div class="custom-control custom-radio">
+                      <input
+                        type="radio"
+                        [id]="slot._id"
+                        [value]="slot._id"
+                        (change)="setSelectedDeliverySlot()"
+                        class="custom-control-input"
+                        [(ngModel)]="deliveryTime"
+                      />
+                      <label
+                        class="custom-control-label barlow-regular color-b-c text-md pointer"
+                        [for]="slot._id"
+                      ></label>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+            <hr />
+            <button
+              type="button"
+              class="btn apply-btn bg-color-primary w-100 barlow-regular color-b"
+              (click)="proceedToPaymentPage()"
+            >
+              {{ "PROCEED" | translate }}
+            </button>
+
+            <br />
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+<ng-template #addressModal let-modal>
+  <br /><br /><br /><br />
+
+  <div class="modal-body">
+    <div class="row add-profile">
+      <div class="col-md-12">
+        <h6 class="barlow-medium color-b-c text-big text-center main-title">
+          {{
+            addressId
+              ? ("UPDATE_DELIVERY_ADDRESS" | translate)
+              : ("ADD_NEW_DELIVERY_ADDRESS" | translate)
+          }}
+        </h6>
+        <p class="text-info mt-2" *ngIf="showMap">
+          {{ "MARKER_NOTE" | translate }}
+        </p>
+        <agm-map
+          [latitude]="location.lat"
+          [longitude]="location.lng"
+          [zoom]="17"
+          [mapDraggable]="true"
+          *ngIf="showMap"
+        >
+          <agm-marker
+            [latitude]="location.lat"
+            [longitude]="location.lng"
+            (dragEnd)="markerDraggedEvent($event.coords)"
+            [markerDraggable]="true"
+          >
+            <agm-info-window>
+              {{ mapAddress }}
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+        <p class="mt-3" *ngIf="showMap">{{ mapAddress }}</p>
+        <form
+          (ngSubmit)="geoCodeAddress()"
+          #addressForm="ngForm"
+          class="mx-4 mt-5"
+          *ngIf="!showMap"
+        >
+          <div class="row form-group">
+            <input
+              type="text"
+              name="address"
+              class="form-control"
+              [(ngModel)]="addressData.address"
+              placeholder="{{ 'ENTER_YOUR_ADDRESS' | translate }}"
+              required
+            />
+            <p
+              class="showPointer text-info"
+              (click)="setMapShowStatus()"
+              *ngIf="!hideEdit"
+            >
+              {{ "EDIT" | translate }}
+            </p>
+          </div>
+          <div class="row form-group">
+            <input
+              type="text"
+              name="flatNo"
+              class="form-control"
+              [(ngModel)]="addressData.flatNo"
+              placeholder="{{ 'ENTER_YOUR_FLAT_NUMBER' | translate }}"
+              required
+            />
+          </div>
+          <div class="row form-group">
+            <input
+              type="text"
+              name="apartmentName"
+              class="form-control"
+              [(ngModel)]="addressData.apartmentName"
+              placeholder="{{ 'ENTER_YOUR_APARTMENT_NAME' | translate }}"
+              required
+            />
+          </div>
+          <div class="row form-group">
+            <input
+              type="text"
+              name="landmark"
+              class="form-control"
+              [(ngModel)]="addressData.landmark"
+              placeholder="{{ 'ENTER_THE_NEAREST_LANDMARK' | translate }}"
+              required
+            />
+          </div>
+          <div class="row form-group">
+            <input
+              type="text"
+              name="postalCode"
+              class="form-control"
+              [(ngModel)]="addressData.postalCode"
+              placeholder="{{ 'ENTER_YOUR_POSTAL_CODE' | translate }}"
+              required
+            />
+          </div>
+          <div class="row form-group mt-3">
+            <input
+              type="text"
+              name="contactNumber"
+              class="form-control"
+              [(ngModel)]="addressData.mobileNumber"
+              placeholder="{{ 'ENTER_YOUR_CONTACT_NUMBER' | translate }}"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <div
+              class="custom-control custom-radio ml-5"
+              *ngFor="let type of addressTypes"
+            >
+              <input
+                type="radio"
+                [id]="type"
+                name="home"
+                [(ngModel)]="addressData.addressType"
+                [value]="type"
+                class="custom-control-input"
+              />
+              <label
+                class="custom-control-label barlow-regular color-b-c text-md"
+                [for]="type"
+                >{{ type }}
+              </label>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6 mb-0">
+              <button
+                class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3"
+                type="button"
+                (click)="closeAddressModal()"
+              >
+                {{ "CANCEL" | translate }}
+              </button>
+            </div>
+            <div class="col-md-6" *ngIf="!showMap">
+              <button
+                class="btn btn-warning w-100 barlow-medium text-smaller"
+                type="submit"
+                [disabled]="addressForm.invalid"
+              >
+                {{ "SUBMIT" | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+        <div class="row mt-3" *ngIf="showMap">
+          <div class="col-md-6 mb-0" *ngIf="addressId">
+            <button
+              class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3"
+              type="button"
+              (click)="showMap = !showMap; hideEdit = false"
+            >
+              {{ "CANCEL" | translate }}
+            </button>
+          </div>
+          <div class="col-md-6 float-right">
+            <button
+              class="btn btn-warning w-100 barlow-medium text-smaller"
+              type="button"
+              (click)="setMapAddress()"
+            >
+              {{ "PROCEED" | translate }}
+            </button>
+          </div>
+          <div class="col-md-6 float-right">
+            <button
+              class="btn btn-warning w-100 barlow-medium text-smaller"
+              type="button"
+              (click)="closeAddressModal()"
+            >
+              {{ "CANCEL" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

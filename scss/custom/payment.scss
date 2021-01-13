@@ -1,0 +1,18 @@
+.payment {
+  .form-control {
+    text-align: center;
+    background: #f5f7f9;
+    border-radius: 5px;
+    border: none;
+    &:focus {
+      box-shadow: none;
+
+      background-color: #f5f7f9;
+    }
+  }
+
+  .side-menu {
+    border-right: 2px solid lightgray;
+    //   padding-left: 3rem;
+  }
+}

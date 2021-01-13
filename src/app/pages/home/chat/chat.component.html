@@ -1,0 +1,95 @@
+<div class="container-fluid color-lightblue chat">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+
+      <br/><br/><br/>
+      <div class="bottom-border">
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h5 class="barlow-bold text-normal color-b main-title ">
+              Chat
+            </h5>
+          </div>
+        </div>
+      </div>
+      <br/><br/>
+
+      <div class="row" *ngIf="chatData">
+        <div class="col-md-9 col-lg-12 col-xl-9">
+          <div class="chat-section bg-white p-4 radius-8 mt-2" id="chat-section">
+            <ng-container *ngFor="let message of chatData">
+              <div class="row" *ngIf="message.sentBy === 'STORE'">
+                <div class="col-md-6">
+                  <div class="incoming">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="row no-gutters">
+                          <div class="triangle-left"></div>
+
+                          <form>
+                            <div class="form-group">
+                              <textarea type="text" [placeholder]="message.message" class="barlow-medium"></textarea>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row text-right" *ngIf="message.sentBy === 'USER'">
+                <div class="col-md-3 offset-md-9">
+                  <div class="outgoing">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="row">
+                          <form>
+                            <div class="form-group">
+                              <textarea type="text" [placeholder]="message.message" class="barlow-medium"></textarea>
+                            </div>
+                          </form>
+                          <div class="triangle-right"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="reply-section bg-white p-3" *ngIf="chatData">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="reply-section">
+                  <form>
+                    <div class="form-group">
+                      <textarea
+                        type="text"
+                        placeholder="Enter a message"
+                        class="barlow-regular text-normal color-b-d"
+                        name="message"
+                        [(ngModel)]="messageData.message"
+                      ></textarea>
+                    </div>
+                  </form>
+                  <a class="showPointer" (click)="sendsMessage()"
+                  ><img src="assets/icons/send.png" class="send-icon"
+                  /></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br/><br/>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

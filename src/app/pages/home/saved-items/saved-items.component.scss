@@ -1,0 +1,16 @@
+.star {
+  position: relative;
+  display: inline-block;
+  color: #212529;
+}
+
+.full {
+  color: white;
+}
+
+.half {
+  position: absolute;
+  display: inline-block;
+  overflow: hidden;
+  color: white;
+}

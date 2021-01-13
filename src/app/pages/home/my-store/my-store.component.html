@@ -1,0 +1,205 @@
+<div class="container-fluid color-lightblue my-store">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <div class="app-bar"></div>
+
+      <br />
+      <br />
+      <br />
+      <br />
+
+      <div class="banner-section">
+        <owl-carousel-o [options]="banner">
+          <ng-container *ngFor="let banner of bannerList">
+            <ng-template carouselSlide>
+              <div class="banner-block bg-color-primary radius-10 pointer"
+                [routerLink]="[banner.bannerType === 'CATEGORY' ? '/products/by/category/' + banner.categoryId : '/product-details/' + banner.productId]">
+                <div class="row">
+                  <div class="col-md-7 col-6 title-section">
+                    <h4 class="title color-w barlow-bold pt-4 pl-5">
+                      {{
+                      banner.title.length > 30
+                        ? (banner.title | slice: 0:30) + "..."
+                        : banner.title
+                      }}
+                    </h4>
+                    <h6 class="barlow-regular sub-title pt-2 pl-5">
+                      {{ "ORDER_NOW" | translate }}
+                      <i class="fa fa-caret-right"></i>
+                    </h6>
+                  </div>
+                  <div class="col-md-3 offset-md-2 col-6 circular-banner-img">
+                    <ng-container *ngIf="banner.filePath !== undefined">
+                      <img [src]="bannerImageUrl + banner.filePath" class="banner-img" />
+                    </ng-container>
+                    <ng-container *ngIf="banner.filePath === undefined">
+                      <img [src]="banner.imageURL" class="banner-img" />
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-md-6 col-8">
+          <h5 class="barlow-bold text-normal color-b main-title">
+            {{ "EXPLORE_BY_CATEGORIES" | translate }}
+          </h5>
+        </div>
+
+        <div class="col-md-6 col-4">
+          <div class="" [routerLink]="['/categories']">
+            <p class="pointer color-b-b barlow-bold text-normal text-right main-title">
+              {{ "VIEW_ALL" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <ul class="category-lists">
+        <li *ngFor="let category of categoryList">
+          <div class="items" [routerLink]="['/products/by/category/', category._id]">
+            <div class="categories-block radius-8 p-3">
+              <ng-container *ngIf="category.filePath !== undefined">
+                <img [src]="categoryImageUrl + category.filePath" class="cat-img" />
+              </ng-container>
+              <ng-container *ngIf="category.filePath === undefined">
+                <img [src]="category.imageUrl" class="cat-img" />
+              </ng-container>
+            </div>
+            <h6 class="color-b-e text-md barlow-medium pointer mt-2 category-name">
+              {{
+              category.title.length > 20
+                ? (category.title | slice: 0:18) + "..."
+                : category.title
+              }}
+            </h6>
+          </div>
+        </li>
+      </ul>
+
+      <hr />
+      <br />
+      <div class="row">
+        <div class="col-md-6 col-8">
+          <h5 class="color-b barlow-bold text-normal main-title">
+            {{ "PRODUCTS" | translate }}
+          </h5>
+        </div>
+        <div class="col-md-6 col-4">
+          <div class="" [routerLink]="['/products']">
+            <p class="l pointer color-b-b barlow-bold text-normal text-right main-title">
+              {{ "VIEW_ALL" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carosuel-list mt-2 pb-4">
+        <owl-carousel-o [options]="limitedOffers">
+          <ng-container *ngFor="let product of productsList">
+            <ng-template carouselSlide>
+              <div class="products-block pointer" [routerLink]="['/product-details/', product._id]">
+                <ng-container>
+                  <img
+                  [src]="product.productImages && product.productImages.length > 0 ? (product.productImages[0].filePath ? productImageUrl+product.productImages[0].filePath : product.productImages[0].imageUrl) : (product.filePath ? productImageUrl+product.filePath : product.imageUrl)" />
+                </ng-container>
+                <!-- <ng-container *ngIf="product.filePath === undefined">
+                  <img [src]="product.imageUrl" />
+                </ng-container> -->
+                <span class="badge badge-primary badge-offer barlow-medium" *ngIf="product.isDealAvailable">
+                  {{ product.dealPercent }}% {{"OFF" | translate}}</span>
+                <div class="row py-2 px-2">
+                  <div class="col-md-12">
+                    <h6 class="barlow-medium main-title">
+                      {{
+                      product.title.length > 22
+                        ? (product.title | slice: 0:18) + "..."
+                        : product.title
+                      }}
+                    </h6>
+                    <ng-container *ngIf="!product.isDealAvailable">
+                      <p class="color-green barlow-bold m-0 prod-price">
+                        {{
+                        product.variant[0].price
+                          | currency: currencyCode:"symbol":"1.2-2"
+                        }}
+                      </p>
+                    </ng-container>
+                    <ng-container *ngIf="product.isDealAvailable">
+                      <div class="row ml-0">
+                        <p class="color-b-c barlow-bold m-0 prod-price">
+                          <del>{{
+                            product.variant[0].price
+                              | currency: currencyCode:"symbol":"1.2-2"
+                            }}</del>
+                        </p>
+                        <p class="color-green barlow-bold m-0 ml-2">
+                          {{
+                          product.variant[0].discountAmount
+                            | currency: currencyCode:"symbol":"1.2-2"
+                          }}
+                        </p>
+                      </div>
+                    </ng-container>
+                  </div>
+                  <div class="col-m-3 text-right mr-2 products-ratings barlow-medium text-small"
+                    *ngIf="product.averageRating">
+                    <strong>{{ product.averageRating.toFixed(1) }}
+                      <span><i class="fa fa-star"></i></span></strong>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="product-outStock">
+                <h6 class="barlow-semibold">Oops! out of Stock</h6>
+              </div> -->
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+      <hr />
+      <br />
+
+      <div class="row" *ngIf="dealsList.length > 0">
+        <div class="col-md-6 col-8">
+          <h5 class="barlow-bold text-normal color-b main-title">
+            {{ "TOP_DEALS" | translate }}
+          </h5>
+        </div>
+        <div class="col-md-6 col-4" [routerLink]="['/deals']">
+          <p class="barlow-bold text-normal pointer color-b-b text-right main-title">
+            {{ "VIEW_ALL" | translate }}
+          </p>
+        </div>
+      </div>
+
+      <div class="row topDeals-lists" *ngIf="dealsList.length > 0">
+        <div class="col-md-2 col-6" *ngFor="let deal of dealsList" (click)="checkDealTypeAndNavigate(deal)">
+          <div class="top-dealsblock pointer">
+            <ng-container *ngIf="deal.filePath !== undefined">
+              <img [src]="dealImageUrl + deal.filePath" class="relative" />
+            </ng-container>
+            <ng-container *ngIf="deal.filePath === undefined">
+              <img [src]="deal.imageUrl" class="relative" />
+            </ng-container>
+            <div class="overlay-top">
+              <h5 class="color-w text-md barlow-semibold pointer top-deals-title">
+                {{deal.title.length > 22 ? (deal.title | slice: 0:18) + "..." : deal.title}}
+              </h5>
+              <h6 class="text-left barlow-medium top-deals-off">
+                {{ deal.dealPercent }}% off
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,171 @@
+<div class="container-fluid color-lightblue cart-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br /><br />
+      <div class="bottom-border">
+        <h5 class="barlow-bold text-normal color-b mt-5 pb-2 main-title">
+          {{ "CART_ITEMS" | translate }}
+        </h5>
+      </div>
+      <div class="row my-4" *ngIf="cartInfo && cartInfo.products.length > 0; else emptyCart">
+        <div class="col-md-7 border-right col-lg-12 col-xl-7">
+          <div class="row bg-white p-3 mx-1 mb-4" *ngFor="let cart of cartInfo.products; index as i">
+            <div class="col-md-4 col-6 p-0 mb-4">
+              <div class="searched-img pointer" [routerLink]="['/product-details/', cart.productId]">
+                <ng-container>
+                  <img
+                    [src]="cart.productImages && cart.productImages.length > 0 ? (cart.productImages[0].filePath ? productImageUrl + cart.productImages[0].filePath : cart.productImages[0].imageUrl) : (cart.filePath ? productImageUrl + cart.filePath : cart.imageUrl)"
+                    class="search-img" />
+                </ng-container>
+                <!-- <ng-container *ngIf="!cart.filePath">
+                  <img [src]="cart.imageUrl" class="search-img" />
+                </ng-container> -->
+              </div>
+            </div>
+
+            <div class="col-md-5 col-6">
+              <h5 class="h1sm barlow-medium color-b pointer main-title"
+                [routerLink]="['/product-details/', cart.productId]">
+                {{ cart.productName }}
+              </h5>
+              <h6 class="smaller-text color-b-c barlow-regular pt-1 cart-price">
+                {{ cart.unit }}
+              </h6>
+
+              <ng-container *ngIf="!cart.isDealAvailable">
+                <h5 class="color-green barlow-bold mt-4 pt-1 prod-price">
+                  {{
+                  cart.productTotal | currency: currencyCode:"symbol":"1.2-2"
+                  }}<span class="barlow-medium"></span>
+                </h5>
+              </ng-container>
+              <ng-container *ngIf="cart.isDealAvailable">
+                <div class="row ml-0">
+                  <h5 class="color-b-d barlow-bold mt-4 pt-1 prod-price">
+                    <del>{{
+                      cart.productTotal + cart.dealTotalAmount
+                        | currency: currencyCode:"symbol":"1.2-2"
+                      }}<span class="barlow-medium"></span></del>
+                  </h5>
+                  <h5 class="color-green barlow-bold mt-4 pt-1 ml-2 prod-price">
+                    {{
+                    cart.productTotal
+                      | currency: currencyCode:"symbol":"1.2-2"
+                    }}<span class="barlow-medium"></span>
+                  </h5>
+                </div>
+              </ng-container>
+            </div>
+
+            <div class="col-md-3 col-12 border-left">
+              <div class="row">
+                <div class="col-md-12 col-5 mb-4">
+                  <div class="cart-quantity">
+                    <a class="showPointer" (click)="changeQuantity('decrement', cart)"><img
+                        src="assets/icons/minus.svg" /></a>
+                    <h6 class="barlow-regular text-smallest color-b pt-1">
+                      {{ cart.quantity }}
+                    </h6>
+                    <a class="showPointer" (click)="changeQuantity('increment', cart)"><img
+                        src="assets/icons/plus.svg" /></a>
+                  </div>
+                </div>
+
+                <div class="col-md-12 col-3">
+                  <button type="button" class="btn btn-outline-dark w-100 barlow-medium mb-3 text-small edit-btn"
+                    [routerLink]="['/product-details/', cart.productId]">
+                    {{ "EDIT" | translate }}
+                  </button>
+                </div>
+
+                <div class="col-md-12 col-4">
+                  <button type="button" class="btn btn-outline-dark w-100 barlow-medium text-small remove-btn"
+                    (click)="deleteProductFromCart(cart)">
+                    {{ "REMOVE" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-lg-7 col-xl-4">
+          <div class="frequently-brought">
+            <h5 class="text-normal barlow-bold color-b pb-2 main-title">
+              {{ "PEOPLE_ALSO_BROUGHT" | translate }}
+            </h5>
+
+            <div class="frequent-products" *ngFor="let product of relatedProducts"
+              [routerLink]="['/product-details', product._id]">
+              <div class="row p-2 mb-4">
+                <div class="col-md-4 col-4">
+                  <div class="frequent-img showPointer">
+                    <ng-container>
+                      <img
+                        [src]="product.productImages && product.productImages.length > 0 ? (product.productImages[0].filePath ? otherProductImageUrl+product.productImages[0].filePath : product.productImages[0].imageUrl) : (product.filePath ? otherProductImageUrl+product.filePath : product.imageUrl)" />
+                    </ng-container>
+                  </div>
+                </div>
+
+                <div class="col-md-8 col-8">
+                  <h6 class="text-md barlow-semibold showPointer mb-2 main-title">
+                    {{ product.title }}
+                  </h6>
+                  <!--                  <h6 class="barlow-regular color-b-c text-14 showPointer m-0 prod-desc">-->
+                  <!--                    {{product.description.length > 100 ? (product.description | slice: 0:100) + "..." : product.description}}-->
+                  <!--                  </h6>-->
+                  <p class="color-green barlow-bold h1sm m-0 prod-price">
+                    {{
+                    product.variant[0].price
+                      | currency: currencyCode:"symbol":"1.2-2"
+                    }}<span class="barlow-medium"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <br />
+          </div>
+
+          <div class="checkout-button">
+            <div class="row checkout-block">
+              <div class="col-md-4 col-4">
+                <div class="bg-color-b subtotal-price text-center checkout-subtotal">
+                  <h6 class="barlow-regular color-w smaller-text m-0 pt-2">
+                    {{ "SUBTOTAL" | translate }}
+                  </h6>
+                  <p class="barlow-bold color-w smaller-text m-0">
+                    {{
+                    cartInfo.subTotal.toFixed(2)
+                      | currency: currencyCode:"symbol":"1.2-2"
+                    }}
+                    <span class="barlow-medium"></span>
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-8 mt-1 pt-2 pointer col-8" (click)="verifyCart()">
+                <div class="checkout-subtotal">
+                  <h6 class="h1sm barlow-regular text-center checkout-btn">
+                    {{ "CHECKOUT" | translate }} &nbsp;<span><img src="assets/icons/arrow.png" /></span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyCart>
+        <div class="text-center">
+          <!--          <img src="assets/images/empty-cart.png" class="img-fluid"/>-->
+          <h5 class="color-green mt-5">{{"EMPTY_CART" | translate}}</h5>
+        </div>
+      </ng-template>
+      <br /><br />
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,26 @@
+.footer-section {
+  background-color: #e3e3e3;
+  padding: 14px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+  @media screen and (max-width: 568px) {
+    position: initial;
+    bottom: none;
+    width: initial;
+    z-index: none;
+  }
+  .footer-title {
+    @media screen and (max-width: 568px) {
+      font-size: 12px !important;
+    }
+  }
+}
+
+.footer-link {
+  .side-menu {
+    border-right: 2px solid lightgray;
+    //   padding-left: 3rem;
+  }
+}

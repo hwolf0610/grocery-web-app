@@ -1,0 +1,37 @@
+<div class="auth-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9 offset-md-1">
+            <img src="assets/icons/logo.png" class="logo" />
+            <h6 class="text-big barlow-medium">Welcome,</h6>
+            <h5 class="h1xl barlow-semibold">Let's Get you started</h5>
+            <h6 class="text-medium barlow-regular color-b-d mb-5 pb-5 mt-3">
+              Please Login or Sign up to continue
+            </h6>
+
+            <button
+              type="button"
+              class="btn btn-outline-warning login-btn"
+              [routerLink]="['/login']"
+            >
+              Log in
+            </button>
+            <br /><br />
+            <button
+              type="button"
+              class="btn btn-warning sign-btn"
+              [routerLink]="['/register']"
+            >
+              Sign up
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 welcome-banner text-center">
+        <img src="assets/images/welcome.png" class="img-fluid banner-img " />
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container-fluid header-section">
+  <div class="">
+    <div class="row">
+      <div class="col-md-12 header-block">
+        <div class="row">
+          <div class="col-md-2 pointer" [routerLink]="['/home']">
+            <img src="assets/images/webapp.png" class="logo-top img-fluid"/>
+          </div>
+          <div class="col-md-2 lang-select" *ngIf="isLoggedIn">
+            <select class="form-control w-100 barlow-medium color-b-b" [(ngModel)]="languageCode"
+                    (change)="ChangeLanguage()">
+              <option disabled translate>CHANGE_LANG</option>
+              <option *ngFor="let language of languages"
+                      [value]="language.languageCode">{{language.languageName}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <a routerLink="/search"><img class="nav-search" src="assets/icons/search.svg"/></a>
+          </div>
+          <div class="col-md-5 text-right">
+            <h6 class="barlow-semibold h1sm">{{ cityName ? cityName : "" }}</h6>
+          </div>
+<!--          <div class="col-md-1 text-center col-3" *ngIf="isLoggedIn && userInfo && userInfo.imageUrl"-->
+<!--               [routerLink]="['/profile']">-->
+<!--            <div class="profile showPointer">-->
+<!--              <img [src]="userInfo && userInfo.imageUrl ? userInfo.imageUrl : defaultProfilePic" class="user-image"-->
+<!--                   (error)="userInfo.imageUrl = defaultProfilePic"/>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="col-md-1 text-right col-3 cart-block" *ngIf="isLoggedIn">
+            <div class="showPointer" routerLink="/cart">
+              <img src="assets/icons/cart.svg" class="cart-img"/>
+              <span class="badge badge-pill badge-dark cart-items" *ngIf="cartLength > 0">{{ cartLength }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

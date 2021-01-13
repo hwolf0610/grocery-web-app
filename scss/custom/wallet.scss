@@ -1,0 +1,32 @@
+.wallet-section {
+  .side-menu {
+    border-right: 2px solid lightgray;
+    //   padding-left: 3rem;
+  }
+  .wallet-block {
+    background-color: white;
+    border-radius: 8px;
+    padding: 3rem 0;
+    .wallet-img {
+      height: 265px;
+      width: 466px;
+    }
+  }
+  .wallet-bal-img {
+    width: 68px;
+    height: 64px;
+  }
+  .wallet-bal {
+    border: 1px solid #0000001a;
+    border-radius: 5px;
+    padding: 25px;
+    margin-top: 3rem;
+  }
+  .transaction-block {
+    background-color: white;
+    border-radius: 8px;
+    height: 526px;
+    overflow-y: scroll;
+    @include scrollBarThin();
+  }
+}

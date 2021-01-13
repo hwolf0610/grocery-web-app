@@ -1,0 +1,21 @@
+.saved-items-page {
+  .side-menu {
+    border-right: 2px solid lightgray;
+    //   padding-left: 3rem;
+  }
+
+  .search {
+    top: 21px;
+    left: 23px;
+    width: 22px;
+  }
+  .saved-type {
+    .saved-img {
+      height: 103px;
+      width: 100%;
+      @media screen and (max-width: 568px) {
+        height: 110px;
+      }
+    }
+  }
+}

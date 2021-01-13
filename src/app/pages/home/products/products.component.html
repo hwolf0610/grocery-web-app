@@ -1,0 +1,264 @@
+<div class="container-fluid color-lightblue product-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br /><br />
+
+      <!-- showing results -->
+
+      <div class="bottom-border">
+        <h5 class="barlow-bold text-normal color-b mt-5 pb-2 main-title">
+          {{ "PRODUCTS" | translate }}
+        </h5>
+      </div>
+      <br /><br />
+
+      <ngb-tabset type="pills" class="nav-block" *ngIf="categoryId" (tabChange)="tabChangeEvent($event)">
+        <ngb-tab [id]="'All'" title="{{ 'ALL' | translate }}" class="nav-block">
+          <ng-template ngbTabContent>
+            <ng-container *ngTemplateOutlet="
+                productsList.length > 0 ? productListTemplate : noData
+              "></ng-container>
+          </ng-template>
+        </ngb-tab>
+
+        <ngb-tab class="nav-block" *ngFor="let subCategory of subCategories" [title]="subCategory.title"
+          [id]="subCategory._id">
+          <ng-template ngbTabContent>
+            <ng-container *ngTemplateOutlet="
+                productsList.length > 0 ? productListTemplate : noData
+              "></ng-container>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+
+      <ng-container *ngIf="!categoryId">
+        <div *ngTemplateOutlet="productListTemplate"></div>
+      </ng-container>
+
+      <br /><br />
+      <app-footer></app-footer>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <ng-template #productListTemplate>
+        <div class="row mt-4 mb-4 mx-1" infiniteScroll [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2"
+          [infiniteScrollThrottle]="1000" (scrolled)="windowScrolledDown()" (scrolledUp)="windowScrolledUp()">
+          <div class="col-md-4 pointer col-xl-4 col-lg-6" *ngFor="let product of productsList">
+            <div class="products bg-white radius-8">
+              <div class="row">
+                <div class="col-md-6 col-6">
+                  <ng-container>
+                    <img [src]="product.productImages && product.productImages.length > 0 ? (product.productImages[0].filePath ? productImageUrl+product.productImages[0].filePath : product.productImages[0].imageUrl) : (product.filePath ? productImageUrl+product.filePath : product.imageUrl)"
+                      
+                      class="product-img relative" [routerLink]="['/product-details', product._id]" />
+                  </ng-container>
+                  <!-- <ng-container *ngIf="!product.filePath">
+                    <img [src]="product.imageUrl" class="product-img relative"
+                      [routerLink]="['/product-details', product._id]" />
+                  </ng-container> -->
+                  <div class="rating-badge absolute">
+                    <span class="badge badge-success">
+                      <ngb-rating *ngIf="product.averageRating" [rate]="product.averageRating" [readonly]="true"
+                        [max]="5">
+                        <ng-template let-fill="fill" let-index="index">
+                          <span class="star" [class.full]="fill === 100">
+                            <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                          </span>
+                        </ng-template>
+                      </ngb-rating>
+                    </span>
+                  </div>
+
+                  <span class="badge badge badge-warning offer-badge">
+                    <div class="off" *ngIf="product.isDealAvailable">
+                      <h6 class="color-w text-center m-0 text-small barlow-medium">
+                        {{ product.dealPercent }}% {{ "OFF" | translate }}
+                      </h6>
+                    </div>
+                  </span>
+                </div>
+                <div class="col-md-6 col-6">
+                  <h6 class="text-med barlow-medium" [routerLink]="['/product-details', product._id]">
+                    {{
+                      product.title.length > 22
+                        ? (product.title | slice: 0:18) + "..."
+                        : product.title
+                    }}
+                  </h6>
+                  <h6 class="smaller-text barlow-regular color-b-c" [routerLink]="['/product-details', product._id]">
+                    {{ product.description | slice: 0:25 }}
+                  </h6>
+
+                  <div class="add-button pt-2" *ngIf="!product.isAddedToCart">
+                    <button class="btn btn-warning barlow-medium text-small btn-sm add-btn pointer" type="button"
+                      (click)="openAddToCartModal(content, product)">
+                      {{ "ADD_TO_CART" | translate }}
+                    </button>
+                  </div>
+                  <div class="cart-quantity " *ngIf="product.isAddedToCart">
+                    <p class="pointer" (click)="changeQuantity('decrement', product)">
+                      <img src="assets/icons/minus.svg" />
+                    </p>
+                    <h6 class="barlow-regular text-smallest color-b pt-1">
+                      {{ product.quantityToCart }}
+                    </h6>
+                    <p class="pointer" (click)="changeQuantity('increment', product)">
+                      <img src="assets/icons/plus.svg" class="pointer" />
+                    </p>
+                  </div>
+                  <div class="row pt-1">
+                    <ng-container *ngIf="product.isDealAvailable">
+                      <div class="col-md-12">
+                        <div class="row mt-2 pt-1">
+                          <div class="col-md-8">
+                            <h6 class="text-smallest barlow-regular color-b-c mb-0 word-b">
+                              <del>{{
+                                product.variant[0].price
+                                  | currency: currencyCode:"symbol":"1.2-2"
+                              }}</del>
+
+                              <span class="color-green barlow-bold text-smaller mb-0 word-b">
+                                {{
+                                  product.variant[0].discountAmount
+                                    | currency: currencyCode:"symbol":"1.2-2"
+                                }}
+                              </span>
+                            </h6>
+
+
+                          </div>
+                          <div class="col-md-4 pl-0">
+                            <h6 class="barlow-medium text-smallest">
+                              {{ product.variant[0].unit }}
+                            </h6>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div class="col-md-12">
+                      {{product.variant[0].unit}}
+                    </div> -->
+                    </ng-container>
+                    <ng-container *ngIf="!product.isDealAvailable">
+                      <div class="col-md-8 mt-3">
+                        <h6 class="color-green barlow-bold text-smaller mb-0 word-b">
+                          {{
+                            product.variant[0].price
+                              | currency: currencyCode:"symbol":"1.2-2"
+                          }}
+                        </h6>
+                      </div>
+                      <div class="col-md-4  mt-3">
+                        <h6 class="barlow-medium text-smaller">
+                          {{ product.variant[0].unit }}
+                        </h6>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="products-outstock" *ngIf="
+                product.variant.length === 1 &&
+                product.variant[0].productStock === 0
+              ">
+              <h6 class="barlow-medium color-w">
+                {{ "OUT_OF_STOCK" | translate }}
+              </h6>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <h5 class="color-green text-center">
+      {{ "NO_PRODUCTS_FOUND" | translate }}
+    </h5>
+  </ng-template>
+  <!-- modal -->
+
+  <ng-template #content let-modal>
+    <div class="">
+      <div class="row px-3 pt-3">
+        <div class="col-md-8 col-7">
+          <h4 class="modal-title h1md barlow-bold prod-name" id="modal-basic-title">
+            {{ "CHOOSE_QUANTITY" | translate }}
+          </h4>
+        </div>
+        <div class="col-md-4 col-5">
+          <div *ngIf="selectedVariant">
+            <div class="cart-quantity">
+              <p class="pointer" (click)="decrementQuantity()">
+                <img src="assets/icons/minus.svg" />
+              </p>
+              <h6 class="barlow-regular text-smallest color-b pt-1">
+                {{ selectedQuantity }}
+              </h6>
+              <p class="pointer" (click)="incrementQuantity()">
+                <img src="assets/icons/plus.svg" class="pointer" />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="row" *ngFor="let variant of selectedProduct.variant">
+        <div class="col-md-3 col-4">
+          <h5 class="barlow-regular color-b-c text-medium main-title">
+            {{ variant.unit }}
+          </h5>
+        </div>
+        <div class="col-md-8 col-8">
+          <label class="container customcheck text-medium color-b-c barlow-regular pointer">
+            <ng-container *ngIf="!selectedProduct.isDealAvailable">
+              <strong class="price color-green prod-price">
+                {{ variant.price | currency: currencyCode:"symbol":"1.2-2" }}
+              </strong>
+            </ng-container>
+            <ng-container *ngIf="selectedProduct.isDealAvailable">
+              <strong class="price prod-price">
+                <del>{{
+                  variant.price | currency: currencyCode:"symbol":"1.2-2"
+                }}</del>
+              </strong>
+              <strong class="price color-green ml-1 prod-price">
+                {{
+                  variant.discountAmount
+                    | currency: currencyCode:"symbol":"1.2-2"
+                }}
+              </strong>
+            </ng-container>
+            <input type="checkbox" [checked]="
+                selectedVariant ? variant._id === selectedVariant._id : false
+              " (change)="variantSelectionEvent($event, variant)" [disabled]="variant.productStock === 0" />
+            <span class="checkmark" style="right: 0rem !important"></span>
+          </label>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-md-6 col-6">
+          <button type="button" class="btn btn-light w-100 mt-4 cancel-btn barlow-regular h1sm"
+            (click)="closeAddToCartModal()">
+            {{ "CANCEL" | translate }}
+          </button>
+        </div>
+        <div class="col-md-6 col-6">
+          <button type="button" class="btn btn-warning w-100 mt-4 cart-btn barlow-regular h1sm pointer"
+            [disabled]="!selectedVariant" (click)="addToCart()">
+            {{ "ADD_TO_CART" | translate }} &nbsp;
+            <img src="assets/icons/cart.png" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

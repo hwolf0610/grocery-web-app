@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45">
+  <g id="search" transform="translate(-2116 -2894)">
+    <rect id="Rectangle_1498" data-name="Rectangle 1498" width="45" height="45" transform="translate(2116 2894)" fill="none"/>
+    <g id="Group_3101" data-name="Group 3101" transform="translate(1804 2862)">
+      <g id="Group_2036" data-name="Group 2036" transform="translate(321.005 41)">
+        <path id="Icon_ionic-ios-search" data-name="Icon ionic-ios-search" d="M31.183,29.539l-7.509-7.578a10.7,10.7,0,1,0-1.624,1.645l7.46,7.529a1.156,1.156,0,0,0,1.631.042A1.163,1.163,0,0,0,31.183,29.539ZM15.265,23.7a8.449,8.449,0,1,1,5.976-2.474A8.4,8.4,0,0,1,15.265,23.7Z" transform="translate(-4.5 -4.493)" fill="#fff"/>
+      </g>
+    </g>
+  </g>
+</svg>

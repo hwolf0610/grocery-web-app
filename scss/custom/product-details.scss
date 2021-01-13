@@ -1,0 +1,121 @@
+.product-details {
+  .side-menu {
+    border-right: 2px solid lightgray;
+    //   padding-left: 3rem;
+  }
+
+  .search {
+    top: 21px;
+    left: 23px;
+    width: 22px;
+  }
+  .profile {
+    border-radius: 50px;
+    height: 46px;
+    width: 46px;
+    background-color: $primary;
+  }
+
+  .item {
+    border-bottom: 2px solid #dedede;
+  }
+  .cat-img {
+    height: 51px;
+  }
+  .quantity {
+    display: flex;
+    justify-content: space-between;
+    width: 124px;
+    border-radius: 25px;
+    border: 1px solid #00000066;
+    height: 30px;
+    background-color: #f5f7f9;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
+    img {
+      background-color: $primary;
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      padding: 8px;
+    }
+  }
+  .product-image {
+    border-radius: 8px;
+    // height: 389px;
+    background: white;
+    text-align: center;
+    padding: 22px;
+    @media screen and (max-width: 768px) {
+      padding: 10px !important;
+    }
+    img {
+      height: 372px;
+      width: 100%;
+    }
+  }
+  .favourite {
+    height: 55px;
+    padding: 15px;
+    // margin-top: 30px;
+    // margin-left: 15px;
+    width: 55px;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+      0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  }
+
+  .checkout-button {
+    border-radius: 5px;
+
+    min-height: 50px;
+    background-color: $primary;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
+      0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    @media screen and (max-width: 568px) {
+      min-height: 33px !important;
+    }
+  }
+  .subtotal-price {
+    min-height: 50px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    word-wrap: break-word;
+    @media screen and (max-width: 568px) {
+      min-height: 33px !important;
+    }
+  }
+
+  .frequent-img {
+    border-radius: 10px 0;
+    background-color: #ffff;
+    // height: 98px;
+    width: 100%;
+    img {
+      height: 65px;
+      width: 100%;
+      border-radius: 5px;
+    }
+  }
+}
+.product-details-title,
+.product-details-description {
+  white-space: nowrap;
+  overflow: hidden;
+}
+.user-ratings {
+  position: absolute;
+  top: 0;
+
+  background: $primary;
+  /* left: 0px; */
+  border-radius: 4px 0 8px 0;
+  padding: 0 10px;
+
+  h6 {
+    font-size: 13px;
+    padding: 2px 0;
+    margin: 0;
+  }
+}

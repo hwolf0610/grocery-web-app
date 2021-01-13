@@ -1,0 +1,20 @@
+@import "scss/custom/custom.scss";
+
+.logo{
+  width: 70px !important ;
+  height: 56px !important ;
+
+}
+
+
+.showPointer {
+  cursor: pointer !important;
+}
+.modal-backdrop.show {
+  opacity:0!important;
+}
+
+.modal-content{
+  border:none!important;
+}
+

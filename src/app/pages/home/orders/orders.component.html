@@ -1,0 +1,391 @@
+<div class="container-fluid color-lightblue cart-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <!-- <div class="app-bar">
+        <app-header-component></app-header-component>
+      </div> -->
+      <!-- showing results -->
+
+      <br /><br />
+
+      <div class="bottom-border">
+        <h5 class="barlow-bold text-normal color-b mt-5 pb-2 main-title">
+          {{ "MY_ORDERS" | translate }}
+        </h5>
+      </div>
+      <h6 class="text-center color-green mt-3" *ngIf="orderList.length === 0">You have not placed any orders.</h6>
+      <ng-container>
+        <div class="row" *ngFor="let order of orderList">
+          <div class="col-md-12">
+            <div class="bg-white radius-8 p-3 my-4">
+              <div class="row">
+                <div class="col-md-2 text-center col-6">
+                  <div class="order-img pointer">
+                    <ng-container *ngIf="order.product.imageUrl">
+                      <img [src]="order.product.imageUrl" class="img-fluid" />
+                    </ng-container>
+                    <!--                    <ng-container *ngIf="!cart.filePath">-->
+                    <!--                      <img [src]="cart.imageUrl" class="img-fluid"/>-->
+                    <!--                    </ng-container>-->
+                  </div>
+                </div>
+                <div class="col-md-6 col-6">
+                  <h6 class="barlow-regular text-medium mb-1 pointer order-title">
+                    {{order.totalProduct === 1 ? order.product.title : order.product.title + " " + ("AND" | translate) + " " + (order.totalProduct - 1) + " " + ("ITEMS" | translate)}}
+                  </h6>
+                  <h6 class="smaller-text color-b-c barlow-regular mt-2 small-title">
+                    {{ "ORDER_ID" | translate }} &nbsp;
+                    <span> {{ order.orderID }}</span>
+                  </h6>
+                  <h4 class="barlow-bold h1sm my-1 prod-price">
+                    {{order.usedWalletAmount && order.usedWalletAmount > 0 ? ((order.grandTotal + order.usedWalletAmount) | currency:currencyCode:'symbol':'1.2-2') : (order.grandTotal | currency: currencyCode:"symbol":"1.2-2")}}
+                  </h4>
+                  <h6 class="smaller-text color-b-c barlow-regular small-title">
+                    {{ "ORDERED" | translate }}
+                    {{ order.createdAt | date: "short" }}
+                  </h6>
+                </div>
+                <div class="col-md-4" *ngIf="order.orderStatus !== 'DELIVERED' && order.orderStatus !== 'CANCELLED'">
+                  <div class="row">
+                    <div class="col-md-1 col-1">
+                      <div
+                        [ngClass]="order.orderStatus === 'CONFIRMED' || order.orderStatus === 'OUT_FOR_DELIVERY' ? 'dot' : 'grey-dot'">
+                      </div>
+                      <div
+                        [ngClass]="order.orderStatus === 'CONFIRMED' || order.orderStatus === 'OUT_FOR_DELIVERY' ? 'vl' : 'grey-vl'">
+                      </div>
+                    </div>
+                    &nbsp;
+                    <div class="col-md-6 col-8">
+                      <h6 class="smaller-text barlow-regular"
+                        [ngClass]="order.orderStatus === 'CONFIRMED' || order.orderStatus === 'OUT_FOR_DELIVERY' ? 'color-green' : 'color-grey'">
+                        {{ "ORDER_CONFIRMED" | translate }}
+                      </h6>
+                      <h6 class="text-smaller barlow-regular color-grey" *ngIf="order.orderStatus === 'CONFIRMED'">
+                        <!--                        {{ order.updatedAt | date: "medium" }}-->
+                      </h6>
+                    </div>
+                    <div class="col-md-1 col-1"
+                      *ngIf="order.orderStatus === 'CONFIRMED' || order.orderStatus === 'OUT_FOR_DELIVERY'">
+                      <img src="assets/icons/confirm.png" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-1 col-1">
+                      <div [ngClass]="
+                          order.orderStatus === 'OUT_FOR_DELIVERY'
+                            ? 'dot'
+                            : 'grey-dot'
+                        "></div>
+                      <div [ngClass]="
+                          order.orderStatus === 'OUT_FOR_DELIVERY'
+                            ? 'vl'
+                            : 'grey-vl'
+                        "></div>
+                    </div>
+                    &nbsp;
+                    <div class="col-md-6 col-8">
+                      <h6 class="smaller-text barlow-regular" [ngClass]="
+                          order.orderStatus === 'OUT_FOR_DELIVERY'
+                            ? 'color-green'
+                            : 'color-grey'
+                        ">
+                        {{ "OUT_FOR_DELIVERY" | translate }}
+                      </h6>
+                    </div>
+                    <h6 class="text-smaller barlow-regular color-grey" *ngIf="order.orderStatus === 'OUT_FOR_DELIVERY'">
+                      <!--                      {{ order.updatedAt | date: "medium" }}-->
+                    </h6>
+                    <div class="col-md-1 col-1" *ngIf="order.orderStatus === 'OUT_FOR_DELIVERY'">
+                      <img src="assets/icons/confirm.png" />
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-1 col-1">
+                      <div class="grey-dot"></div>
+                    </div>
+                    &nbsp;
+                    <div class="col-md-6 col-8">
+                      <h6 class="color-rey smaller-text barlow-regular">
+                        {{ "ORDER_DELIVERED" | translate }}
+                      </h6>
+                    </div>
+                    <!--                    <div class="col-md-1 col-1" *ngIf="order.orderStatus === 'OUT_FOR_DELIVERY'">-->
+                    <!--                      <img src="assets/icons/confirm.png"/>-->
+                    <!--                    </div>-->
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                    (click)="openOrderDetailsModal(orderDetailsModal, order)">
+                    {{ "ORDER_DETAILS" | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <br /><br />
+      <app-footer></app-footer>
+    </div>
+  </div>
+
+  <!-- REORDER MODAL -->
+  <ng-template #orderDetailsModal let-modal>
+
+    <div id="popup">
+      <div class="modal-body">
+        <div class="row close-button">
+          <div class="col-md-6">
+
+          </div>
+          <div class="col-md-6 close ">
+            <!-- <button type="button" class="close-btn" aria-label="Close"></button>
+          <span aria-hidden="true">&times;</span> -->
+
+            <button (click)=" closeModal()" type="button" class="close"><i class="fa fa-close"></i></button>
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-6">
+            <span>
+              <h6 class="barlow-regular text-normal mt-4 main-title">
+                {{ "ORDER_ID" | translate }}
+                {{ orderInfo.orderID }}
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "DATE" | translate }}
+                {{ orderInfo.createdAt | date }}
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "PAYMENT_TYPE" | translate }}
+                {{ orderInfo.paymentType }}
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "DELIVERY_DATE" | translate }}:
+                {{ orderInfo.deliveryDate }}
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "TIME_SLOT" | translate }}:
+                {{ orderInfo.deliveryTime }}
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "PAYMENT_STATUS" | translate }}:
+                <span class="color-green">
+                  {{orderInfo.paymentStatus | translate}}</span>
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "ORDER_STATUS" | translate }}
+                <span class="color-green">
+                  {{ orderInfo.orderStatus | titlecase }}</span>
+              </h6>
+              <h6 class="barlow-regular text-normal mt-3 main-title">
+                {{ "ADDRESS" | translate }}
+                {{ orderInfo.address.address | titlecase }}
+              </h6>
+              <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button" (click)="cancelOrder()"
+                *ngIf="orderInfo.orderStatus === 'PENDING' &&  orderInfo.paymentType !== 'WALLET'">
+                {{ "CANCEL_ORDER" | translate }}
+              </button>
+              <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                (click)="rateDeliveryBoy(orderInfo._id)"
+                *ngIf="orderInfo.orderStatus === 'DELIVERED' && orderInfo.isDeliveryBoyRated===false">
+                {{ "RATE_DELIVERY_BOY" | translate }}
+              </button>
+            </span>
+          </div>
+          <div class="col-md-6 all-products">
+            <span>
+              <div class="row" *ngFor="let cart of orderInfo.cart.products">
+                <div class="col-md-4 col-5">
+                  <ng-container *ngIf="cart.filePath">
+                    <img [src]="productDetailImageUrl + cart.filePath" class="img-fluid" />
+                  </ng-container>
+                  <ng-container *ngIf="!cart.filePath">
+                    <img [src]="cart.imageUrl" class="img-fluid" />
+                  </ng-container>
+                </div>
+
+                <div class="col-md-7 col-7">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h6 class="barlow-semibold text-medium col-md-9 main-title">
+                        {{ cart.productName }}
+                      </h6>
+                    </div>
+                    <div class="col-md-6">
+                      <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                        (click)="openRateModal(ratecontent,cart.productId)"
+                        *ngIf="orderInfo.orderStatus === 'DELIVERED' && cart['isRated'] === false">
+                        {{ "RATINGS" | translate }}
+                      </button>
+                      <!-- <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                        (click)="openRateModal(ratecontent,cart.productId)"
+                        *ngIf="orderInfo.orderStatus === 'DELIVERED' && cart.isRated === true">
+                        {{ "UPDATE_RATINGS" | translate }}
+                      </button> -->
+                      <div class="col-md-12" *ngIf="cart['isRated'] ===true && orderInfo.orderStatus === 'DELIVERED'">
+                        <ngb-rating [(ngModel)]="cart.rating" [max]="5"
+                          (click)="openRateModal(ratecontent,cart.productId)"></ngb-rating>
+                      </div>
+                    </div>
+                  </div>
+                  <h6 class="text-small color-b-c barlow-regular prod-price">
+                    {{ cart.unit }} ({{ cart.quantity }}) *
+                    {{ cart.price | currency: currencyCode:"symbol":"1.2-2" }}
+                    <ng-container *ngIf="cart.isDealAvailable">
+                      <p class="color-b-d mt-1 prod-price">
+                        {{ "DEAL_OFFER" | translate }} :
+                        {{cart.dealTotalAmount | currency: currencyCode:"symbol":"1.2-2"
+                        }}
+                      </p>
+                    </ng-container>
+                  </h6>
+                  <h4 class="barlow-bold text-normal text-right prod-price">
+                    {{cart.productTotal | currency: currencyCode:"symbol":"1.2-2"}}
+                  </h4>
+                </div>
+
+              </div>
+
+              <hr />
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+
+          </div>
+
+          <div class="col-md-6 mt-5">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "SUB_TOTAL" | translate }}
+                    </h6>
+                  </div>
+                  <div class="col-md-5 text-right">
+                    <h4 class="barlow-bold text-normal prod-price">
+                      {{orderInfo.cart.subTotal | currency: currencyCode:"symbol":"1.2-2"}}
+                    </h4>
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="orderInfo.cart.tax > 0">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "TAX" | translate }}
+                    </h6>
+                  </div>
+                  <div class="col-md-5 text-right">
+                    <h4 class="barlow-bold text-normal prod-price">
+                      {{orderInfo.cart.tax | currency: currencyCode:"symbol":"1.2-2"}}
+                    </h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "DELIVERY_CHARGES" | translate }}
+                    </h6>
+                  </div>
+                  <div class="col-md-5 text-right">
+                    <h4 class="barlow-bold text-normal prod-price">
+                      {{orderInfo.cart.deliveryCharges > 0 ? (orderInfo.cart.deliveryCharges | currency: currencyCode:"symbol":"1.2-2") : ("FREE" | translate)}}
+                    </h4>
+                  </div>
+                </div>
+                <div class="row" *ngIf="orderInfo.cart.couponCode">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "DISCOUNT" | translate }}:
+                    </h6>
+                  </div>
+                  <div class="col-md-5 text-right">
+                    <h4 class="barlow-bold text-normal prod-price">
+                      {{orderInfo.cart.couponAmount | currency: currencyCode:"symbol":"1.2-2"}}
+                    </h4>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "USED_WALLET_AMOUNT" | translate }}:
+                    </h6>
+                  </div>
+                  <div class="col-md-5 text-right">
+                    <h4 class="barlow-bold text-normal prod-price">
+                      {{orderInfo.cart.walletAmount | currency: currencyCode:"symbol":"1.2-2"}}
+                    </h4>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-7">
+                    <h6 class="text-md color-b barlow-medium prod-price">
+                      {{ "TOTAL_AMOUNT" | translate }}
+                    </h6>
+                  </div>
+                  <div class="col-md-5">
+                    <h4 class="barlow-bold text-normal text-right prod-price">
+                      {{orderInfo.cart.walletAmount && orderInfo.cart.walletAmount > 0 ? ((orderInfo.cart.grandTotal + orderInfo.cart.walletAmount) | currency:currencyCode:'symbol':'1.2-2') : (orderInfo.cart.grandTotal | currency: currencyCode:"symbol":"1.2-2")}}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #ratecontent let-modal>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <h6 class="barlow-medium color-red text-big text-center">
+            {{ "RATE_PRODUCT" | translate }}
+          </h6>
+          <div class="row text-center my-2">
+            <div class="col-md-12">
+              <ngb-rating class="ngb-ratingbar" [(rate)]="rateData.rate" [max]="5"></ngb-rating>
+            </div>
+          </div>
+          <div class="row text-center my-2">
+            <div class="col-md-12">
+              <textarea class="form-control custom-textarea barlow-regular smaller-text color-b-c" rows="5"
+                placeholder="{{'TELL_US_YOUR_EXPERIENCE'|translate}}" [(ngModel)]="rateData.description"></textarea>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <button class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3" type="button"
+                (click)="closeRateModal()">
+                {{ "CANCEL" | translate }}
+              </button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                [disabled]="rateData.rate === 0 ||rateData.description===''" (click)="rateProduct()">
+                {{ "SUBMIT" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- rating modal -->
+</div>

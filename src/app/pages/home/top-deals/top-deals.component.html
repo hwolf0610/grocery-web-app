@@ -1,0 +1,41 @@
+<div class="container-fluid color-lightblue top-deals-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br/>
+      <br/><br/>
+      <br/>
+
+      <!-- showing results -->
+
+      <div class="bottom-border">
+        <h5 class="barlow-bold text-normal color-b mt-4 pb-2" translate>
+          TOP_DEALS
+        </h5>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-md-2 mb-3" *ngFor="let deal of dealList">
+          <div class="tops-block pointer" (click)="checkDealTypeAndNavigate(deal)">
+            <ng-container *ngIf="deal.filePath">
+              <img [src]="dealImageUrl+deal.filePath" class="top-img"/>
+            </ng-container>
+            <ng-container *ngIf="!deal.filePath">
+              <img [src]="deal.imageUrl" class="top-img"/>
+            </ng-container>
+            <h5 class="title barlow-medium pl-2 pr-2 py-2 m-0">
+              {{ deal.title.length > 22 ? (deal.title | slice:0:18) + '...' : deal.title }}
+            </h5>
+            <h6 class="price barlow-medium pl-2 pr-2 pb-2">{{deal.dealPercent}}% off</h6>
+          </div>
+        </div>
+      </div>
+
+      <br/><br/>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

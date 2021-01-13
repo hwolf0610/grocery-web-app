@@ -1,0 +1,274 @@
+<div class="container-fluid color-lightblue show-result-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <!-- <div class="app-bar">
+        <app-header-component></app-header-component>
+      </div> -->
+
+      <br />
+      <br /><br />
+
+      <!-- showing results -->
+
+      <div class="bottom-border">
+        <h5
+          class="barlow-bold text-normal color-b mt-4 pb-2 main-title"
+          translate
+        >
+          FAVOURITES
+        </h5>
+      </div>
+      <div class="show-result">
+        <!--        <h5 class="color-green text-center" *ngIf="!isLoading && productsList.length === 0">No products found</h5>-->
+        <div class="">
+          <div class="result-block p-3">
+            <h6 class="text-center color-green" *ngIf="favourites.length === 0">
+              {{ "NO_FAVOURITES" | translate }}
+            </h6>
+            <div class="row">
+              <div
+                class="col-md-4 col-xl-4 col-lg-6"
+                *ngFor="let favourite of favourites"
+              >
+                <div class="bg-white p-2 search-block">
+                  <div class="row">
+                    <div class="col-md-6 col-6">
+                      <div class="searched-img">
+                        <ng-container>
+                          <img
+                          [src]="favourite.productImages && favourite.productImages.length > 0 ? (favourite.productImages[0].filePath ? productImageUrl+favourite.productImages[0].filePath : favourite.productImages[0].imageUrl) : (favourite.filePath ? productImageUrl+favourite.filePath : favourite.imageUrl)"
+                            class="pointer"
+                            [routerLink]="['/product-details/', favourite._id]"
+                          />
+                        </ng-container>
+                        <!-- <ng-container *ngIf="!favourite.filePath">
+                          <img
+                            [src]="favourite.imageUrl"
+                            class="pointer"
+                            [routerLink]="['/product-details/', favourite._id]"
+                          />
+                        </ng-container> -->
+                        <span class="badge badge-warning off">
+                          <div class="" *ngIf="favourite.isDealAvailable">
+                            <h6
+                              class="color-w text-center m-0 text-small barlow-medium"
+                            >
+                              {{ favourite.dealPercent }}% Off
+                            </h6>
+                          </div>
+                        </span>
+                      </div>
+                      <div class="rating-badge absolute rating-badges">
+                        <span class="badge badge-success">
+                          <ngb-rating
+                            *ngIf="favourite.averageRating"
+                            [rate]="favourite.averageRating"
+                            [readonly]="true"
+                            [max]="5"
+                          >
+                            <ng-template let-fill="fill" let-index="index">
+                              <span class="star" [class.full]="fill === 100">
+                                <span class="half" [style.width.%]="fill"
+                                  >&#9733;</span
+                                >&#9733;
+                              </span>
+                            </ng-template>
+                          </ngb-rating>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-6">
+                      <h6
+                        class="text-med barlow-medium color-b pointer"
+                        [routerLink]="['/product-details/', favourite._id]"
+                      >
+                        {{
+                          favourite.title.length > 22
+                            ? (favourite.title | slice: 0:18) + "..."
+                            : favourite.title
+                        }}
+                      </h6>
+                      <h6 class="text-smallest color-b-c barlow-regular">
+                        {{ favourite.description }}
+                      </h6>
+                      <!-- <h6>Rating here........</h6> -->
+
+                      <div class="quantity" *ngIf="favourite.isAddedToCart">
+                        <a
+                          class="pointer"
+                          (click)="changeQuantity('decrement', favourite)"
+                          ><img src="assets/icons/minus.svg"
+                        /></a>
+                        <h6 class="barlow-regular text-smallest color-b pt-1">
+                          {{ favourite.quantityToCart }}
+                        </h6>
+                        <a
+                          class="pointer"
+                          (click)="changeQuantity('increment', favourite)"
+                          ><img src="assets/icons/plus.svg" />
+                        </a>
+                      </div>
+
+                      <div
+                        class="cart-btn barlow-regular color-b text-smaller"
+                        *ngIf="!favourite.isAddedToCart"
+                      >
+                        <button
+                          type="button"
+                          class="btn btn-warning barlow-medium btn-sm text-small"
+                          (click)="openAddToCartModal(content, favourite)"
+                        >
+                          {{ "ADD_TO_CART" | translate }}
+                        </button>
+                      </div>
+                      <ng-container *ngIf="favourite.isDealAvailable">
+                        <div class="row">
+                          <div class="col-md-12 pt-2">
+                            <h6
+                              class="text-smallest barlow-regular color-b-c mb-0 pt-1"
+                            >
+                              <del>{{
+                                favourite.variant[0].price
+                                  | currency: currencyCode:"symbol":"1.2-2"
+                              }}</del>
+                              <span
+                                class="color-green barlow-bold text-smallermb-0 pt-1"
+                              >
+                                {{
+                                  favourite.variant[0].discountAmount
+                                    | currency: currencyCode:"symbol":"1.2-2"
+                                }}</span
+                              >
+                            </h6>
+                          </div>
+                        </div>
+                      </ng-container>
+                      <ng-container *ngIf="!favourite.isDealAvailable">
+                        <h6
+                          class="color-green barlow-bold text-smaller mb-0 pt-3"
+                        >
+                          {{
+                            favourite.variant[0].price
+                              | currency: currencyCode:"symbol":"1.2-2"
+                          }}
+                        </h6>
+                      </ng-container>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="products-outstock"
+                  *ngIf="
+                    favourite.variant.length === 1 &&
+                    favourite.variant[0].productStock === 0
+                  "
+                >
+                  <h6 class="barlow-medium color-w">
+                    {{ "OUT_OF_STOCK" | translate }}
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <br /><br />
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="">
+    <div class="row px-3">
+      <div class="col-md-8">
+        <h4 class="modal-title h1md barlow-bold" id="modal-basic-title">
+          {{ "CHOOSE_QUANTITY" | translate }}
+        </h4>
+      </div>
+      <div class="col-md-4 pt-3">
+        <div *ngIf="selectedVariant">
+          <div class="cart-quantity">
+            <p class="pointer" (click)="decrementQuantity()">
+              <img src="assets/icons/minus.svg" />
+            </p>
+            <h6 class="barlow-regular text-smallest color-b pt-1">
+              {{ selectedQuantity }}
+            </h6>
+            <p class="pointer" (click)="incrementQuantity()">
+              <img src="assets/icons/plus.svg" class="pointer" />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngFor="let variant of selectedProduct.variant">
+      <div class="col-md-3">
+        <h5 class="barlow-regular color-b-c text-medium">
+          {{ variant.unit }}
+        </h5>
+      </div>
+      <div class="col-md-8">
+        <label
+          class="container customcheck text-medium color-b-c barlow-regular pointer"
+        >
+          <ng-container *ngIf="!selectedProduct.isDealAvailable">
+            <strong class="price color-green">
+              {{ variant.price | currency: currencyCode:"symbol":"1.2-2" }}
+            </strong>
+          </ng-container>
+          <ng-container *ngIf="selectedProduct.isDealAvailable">
+            <strong class="price">
+              <del>{{
+                variant.price | currency: currencyCode:"symbol":"1.2-2"
+              }}</del>
+            </strong>
+            <strong class="price color-green ml-1">
+              {{
+                variant.discountAmount | currency: currencyCode:"symbol":"1.2-2"
+              }}
+            </strong>
+          </ng-container>
+          <input
+            type="checkbox"
+            [checked]="
+              selectedVariant ? variant._id === selectedVariant._id : false
+            "
+            (change)="variantSelectionEvent($event, variant)"
+            [disabled]="variant.productStock === 0"
+          />
+          <span class="checkmark" style="right: 0rem !important"></span>
+        </label>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-md-6">
+        <button
+          type="button"
+          class="btn btn-light w-100 mt-4 cancel-btn barlow-regular h1sm"
+          (click)="closeAddToCartModal()"
+        >
+          {{ "CANCEL" | translate }}
+        </button>
+      </div>
+      <div class="col-md-6">
+        <button
+          type="button"
+          class="btn btn-warning w-100 mt-4 cart-btn barlow-regular h1sm"
+          [disabled]="!selectedVariant"
+          (click)="addToCart()"
+        >
+          {{ "ADD_TO_CART" | translate }} &nbsp;
+          <img src="assets/icons/cart.png" />
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

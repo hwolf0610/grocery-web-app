@@ -1,0 +1,459 @@
+@import "scss/variables.scss";
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 999 !important;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 0;
+  z-index: 22;
+  height: 73px;
+  border-bottom: 1px solid #019fb6;
+  box-shadow: 0 1px 6px -2px rgba(0, 0, 0, 0.26);
+  // overflow: hidden;
+  .nav-item {
+    .nav-link {
+      position: relative;
+      display: block;
+      text-transform: uppercase;
+      overflow: hidden;
+      margin: 0 20px;
+      opacity: 0.9;
+      color: #000000;
+      font-weight: 600;
+      padding: 25px 5px 0;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      transition: color 0.3s ease;
+
+      &:after {
+        margin-top: 25px;
+        display: block;
+        content: "";
+        border-bottom: solid 2px #019fb6;
+        transform: scaleX(0);
+        transition: transform 250ms ease;
+      }
+
+      &:hover,
+      :focus {
+        color: #fff;
+
+        &:after {
+          transform: scaleX(1);
+        }
+      }
+
+      &.active-router-link {
+        color: #fff;
+        font-weight: 700;
+        opacity: 1;
+
+        &:after {
+          transform: scaleX(1);
+        }
+      }
+    }
+  }
+
+  .nav-link-icon {
+    position: relative;
+    opacity: 0.9;
+    svg {
+      position: relative;
+    }
+  }
+
+  .nav-right {
+    margin: 24px 50px 0;
+
+    .badge {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      padding-top: 7px;
+      border-radius: 50%;
+      top: -24px;
+      right: 15px;
+      font-size: 9px;
+      font-weight: 800;
+      background-color: #ffffff;
+      color: #fff;
+      justify-content: center;
+    }
+
+    .fa {
+      font-size: 1.8rem;
+
+      opacity: 0.8;
+    }
+  }
+
+  a:hover {
+    text-decoration: none !important;
+  }
+
+  .logo {
+    .banner-img {
+      padding: 5px 10px 15px 40px;
+      cursor: pointer;
+    }
+  }
+
+  .mobile-menu {
+    background: transparent;
+    padding: 0;
+    font-size: 28px;
+    display: none;
+    color: #000000;
+  }
+
+  .navbar-wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+  }
+
+  .dropdown {
+    .btn {
+      height: auto;
+      width: auto;
+      border: 0;
+      padding: 0 20px;
+      margin-top: -2px;
+      opacity: 0.9;
+      text-align: center;
+
+      img {
+        width: 28px;
+      }
+
+      &:hover,
+      :focus {
+        background-color: transparent !important;
+        color: #fff !important;
+      }
+    }
+
+    .dropdown-toggle::after {
+      display: none !important;
+    }
+
+    .dropdown-menu {
+      top: 46px !important;
+      left: -44px !important;
+
+      border-top: 0;
+      border-radius: 0;
+      border-bottom-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      width: 100%;
+      background-color: rgba(246, 246, 249, 0.9) !important;
+
+      .dropdown-item {
+        padding: 0.5rem 1.5rem;
+
+        font-size: 15px;
+
+        &:hover,
+        :focus {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .logo-sm {
+    display: none;
+  }
+  @media (max-width: 992px) {
+    .navbar-nav {
+      flex-direction: row;
+    }
+    .logo .banner-img {
+      padding: 20px 10px 0px 10px;
+    }
+
+    .nav-item .nav-link {
+      padding: 24px 10px 0px 0;
+      font-size: 12px;
+    }
+
+    .nav-right .fa {
+      font-size: 1.2rem;
+    }
+
+    .nav-right {
+      margin: 21px 20px 2px;
+    }
+
+    .nav-right .badge {
+      top: -8px;
+      right: 11px;
+      width: 18px;
+      height: 18px;
+      padding-top: 6px;
+    }
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media (max-width: 768px) {
+    padding: 19px 0 0 32px;
+    .mobile-menu {
+      display: block !important;
+    }
+    .nav-right {
+      margin: 10px 20px 2px;
+    }
+    .logo {
+      display: none;
+    }
+    .logo-sm {
+      display: block;
+      width: 49px;
+      position: absolute;
+      top: -2px;
+      left: 40px;
+    }
+    .nav-center {
+      display: none;
+    }
+    .navbar-nav {
+      flex-direction: row;
+    }
+    .dropdown .dropdown-menu.show {
+      position: absolute;
+      // top: 54px !important;
+      // left: -78px !important;
+      left: -70px !important;
+    }
+  }
+  .nav-right .badge {
+    top: -12px;
+    right: -9px;
+    line-height: 7px;
+  }
+}
+@media (max-width: 550px) {
+}
+//for tab and small devices
+.side-menus {
+  // background-color: $primary;
+  background-color: black;
+  padding-left: 15px;
+  position: fixed;
+  // top: 73px;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  z-index: 999;
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .logo {
+    text-align: center;
+    padding: 2.2rem 0;
+
+    img {
+      width: 200px;
+    }
+  }
+
+  .link-wrapper {
+    .nav-link {
+      opacity: 0.95;
+      font-size: 15px;
+      font-weight: 400;
+      position: relative;
+
+      &:hover,
+      :focus {
+        opacity: 1;
+      }
+
+      &:after {
+        content: "\203A";
+        position: absolute;
+        top: 4px;
+        right: 0;
+        font-size: 22px;
+      }
+    }
+
+    .nav-item {
+      padding: 5px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      margin-bottom: 1px;
+      position: relative;
+    }
+  }
+}
+
+//sticky header in product detail page for web
+.fixed-nav-web {
+  background: #fff;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.08);
+  position: fixed;
+  top: 0;
+  height: 73px;
+  @media (max-width: 768px) {
+    height: 102px;
+  }
+  width: 100%;
+  z-index: 999;
+  display: none;
+  align-items: center;
+  &.active {
+    display: flex;
+  }
+  .p-wrapper {
+    display: flex;
+    .logo {
+      width: 54px;
+      height: 54px;
+    }
+    h5 {
+      font-weight: 600;
+
+      margin: 15px 0 0 5px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  .btn-wrapper {
+    padding-top: 7px;
+    .btn {
+      width: 140px;
+      margin-left: 20px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+  @media (max-width: 1024px) {
+    .btn-wrapper .btn {
+      width: 134px;
+    }
+  }
+  @media (max-width: 900px) {
+    .btn-wrapper .btn {
+      //width: 84px;
+      //height: 24px;
+      padding-top: 3px;
+      //font-size: 10px;
+      font-weight: 600;
+      margin-left: 10px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    &.active {
+      display: none;
+    }
+  }
+}
+
+//sticky header in product detail page for mobile
+.fixed-nav-mobile {
+  background: $primary;
+  box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.08);
+  position: fixed;
+  //   top: 72px;
+  height: 73px;
+  width: 100%;
+  z-index: 999;
+  display: none;
+  align-items: center;
+
+  .btn-wrapper {
+    display: flex;
+    justify-content: center;
+    padding-top: 7px;
+    .btn {
+      width: 140px;
+      margin-left: 20px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+  @media (max-width: 600px) {
+    &.active {
+      display: flex;
+    }
+  }
+}
+
+.side-logo-mobile {
+  padding-left: 25px;
+  height: 36px;
+  width: 208px;
+  margin-top: 7rem;
+  padding-left: 25px;
+  @media (max-width: 600px) {
+    height: 36px;
+  }
+}
+
+.link-wrapper {
+  .categories {
+    .active {
+      // border-top-right-radius: 8px;
+      // border-bottom-right-radius: 8px;
+      background-color: $primary !important;
+      color: $white-b !important;
+    }
+  }
+}
+
+.sidemenu-header {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  background-color: #ffffff;
+  @media (max-width: 568px) {
+    background-color: #ffffff !important;
+    z-index: 99999 !important;
+  }
+
+  @media (max-width: 600px) {
+    display: -webkit-box !important;
+    background-color: #f5f7f9;
+    z-index: 99999 !important;
+  }
+  @media (max-height: 1924px) {
+    display: -webkit-box !important;
+    background-color: #f5f7f9;
+  }
+  @media (max-width: 1400px) {
+    display: none;
+  }
+}
+
+.header-bar {
+  @media (max-width: 568px) {
+    display: -webkit-box !important;
+  }
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.category-icons {
+  @media (max-width: 568px) {
+    display: initial !important;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+.counter {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+}

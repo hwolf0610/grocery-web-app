@@ -1,0 +1,84 @@
+<div class="container-fluid color-lightblue wallet-section">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br /><br />
+      <br /><br />
+
+      <div class="row">
+        <div class="col-md-8 text-center">
+          <div class="wallet-block">
+            <img src="assets/images/wallet.png" class="wallet-img" />
+            <br />
+            <div class="wallet-balance">
+              <div class="row">
+                <div class="col-md-8 offset-md-2">
+                  <div class="wallet-bal">
+                    <div class="row">
+                      <div class="col-md-3">
+                        <img src="assets/images/wallet-bal.png" class="wallet-bal-img" />
+                      </div>
+                      <div class="col-md-3 text-left">
+                        <h6 class="text-medium barlow-medium color-b-c">
+                          {{"WALLET"|translate}} <br />{{"BALANCE"|translate}}:
+                        </h6>
+                      </div>
+                      <div class="col-md-3">
+                        <h6 class="barlow-bold h1md color-green">
+                          {{ walletInfo.walletAmount | currency: currencyCode:"symbol":"1.2-2"}}</h6>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="transaction-block">
+            <h6 class="barlow-bold text-normal p-3">{{"RECENT_TRANSACTIONS"|translate}}</h6>
+            <hr class="m-0" />
+            <div>
+              <div class="order-details p-3" *ngFor="let data of walletHistoryDetails;let i = index">
+                <h6 class="barlow-semibold text-14">
+                  {{"ORDER_ID"|translate}}:<span class="barlow-regular">{{data.orderID}}</span>
+                </h6>
+                <h6 class="barlow-regular text-14">
+                  {{"DATE"|translate}}<span>{{data.updatedAt|date: 'dd/MM/yyyy'}}</span>
+                </h6>
+                <h6 class="barlow-regular text-14">
+                  {{"TRANSACTION_TYPE" |translate}}:<span
+                    *ngIf="data.transactionType==='ORDER_CANCELLED'">{{"ORDER_CANCELLED"|translate}}</span>
+                  <span *ngIf="data.transactionType==='ORDER_PAYMENT'">{{"ORDER_PAYMENT"|translate}}</span>
+                </h6>
+                <h6 class="barlow-regular text-14">
+                  {{"AMOUNT"|translate}}:<span
+                    class="barlow-semibold color-green">{{data.amount | currency: currencyCode:"symbol":"1.2-2"}}</span>
+                </h6>
+                <h6 class="barlow-regular text-14">
+                  {{"WALLET"|translate}}:<span *ngIf="data.isCredited===true">
+                    {{"CREDIT"|translate}}<i class="fa fa-arrow-down color-green"></i></span>
+                  <span *ngIf="data.isCredited===false">
+                    {{"DEBIT"|translate}}<i class="fa fa-arrow-up color-red"></i></span>
+                </h6>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between p-2 row ml-0" *ngIf="total > 0">
+            <button type="button" (click)="pageChange('dec')" [disabled]="page === 0"
+              class="btn btn-outline-dark text-small main-title">
+              {{ "PREV" | translate }}
+            </button>
+            <button type="button" [disabled]="fetchedRecordsCount === total" (click)="pageChange('inc')" class="btn btn-outline-dark text-small main-title mr-2">
+              {{ "NEXT" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

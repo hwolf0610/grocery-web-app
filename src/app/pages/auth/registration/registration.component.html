@@ -1,0 +1,137 @@
+<div class="auth-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9 offset-md-1">
+            <img src="assets/images/webapp.png" class="showPointer logo" [routerLink]="['/home']" />
+
+            <form (ngSubmit)="registerNewUser()" [formGroup]="registrationForm" autocomplete="off"
+              *ngIf="!isRegistered">
+              <div class="form-group row">
+                <div class="col-md-6">
+                  <label for="exampleInputEmail1">{{ "FIRST_NAME" | translate }}
+                    <span style="color: red">*</span></label>
+                  <input type="name" class="form-control barlow-regular text-normal color-b" id="exampleInputname"
+                    aria-describedby="emailHelp" placeholder="{{ 'ENTER_YOUR_FIRST_NAME' | translate }}"
+                    formControlName="firstName" />
+                </div>
+                <div class="col-md-6">
+                  <label for="exampleInputEmail1">{{ "LAST_NAME" | translate }}
+                    <span style="color: red">*</span></label>
+                  <input type="name" class="form-control barlow-regular text-normal color-b" id="exampleInputname2"
+                    aria-describedby="emailHelp" placeholder="{{ 'ENTER_YOUR_LAST_NAME' | translate }}"
+                    formControlName="lastName" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">{{"COUNTRY_CODE" | translate}} <span style="color: red">*</span></label>
+                <!-- <label for="exampleInputEmail1">{{ "MOBILE_NUMBER" | translate }} <span
+                    style="color: red;">*</span></label> -->
+                <select class="form-control" (change)="addCountryCode($event)" name="countryCode">
+                  <option>Select</option>
+                  <option *ngFor="let countryCode of countryCodeArray" [value]="countryCode.dial_code">
+                    {{ countryCode.dial_code }} ({{ countryCode.code }}) ({{
+                      countryCode.name
+                    }})
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>{{"MOBILE_NUMBER" | translate}} <span style="color: red">*</span></label>
+                <div class="row col-md-12">
+                  <ng-container *ngIf="countryCode">
+                    <input type="name" class="form-control barlow-regular text-normal color-b input-country col-md-3"
+                    readonly [(ngModel)]="countryCode" [ngModelOptions]="{standalone:true}" id="exampleI3nputname"
+                    aria-describedby="emailHelp" />
+                  </ng-container>
+                  <input type="name" class="form-control barlow-regular text-normal color-b input-country"
+                    [ngClass]="countryCode ? 'col-md-9':'col-md-12'" id="exampleI3nputname" aria-describedby="emailHelp"
+                    placeholder="{{ 'ENTER_YOUR_MOBILE_NUMBER' | translate }}" formControlName="mobileNumber" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="exampleInputEmail1">{{ "EMAIL (OPTIONAL)" | translate
+                  }}<span style="color: red"></span></label>
+                <input type="email" class="form-control barlow-regular text-normal color-b" id="exampleInputEmail1"
+                  aria-describedby="emailHelp" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                  placeholder="{{ 'ENTER_YOUR_EMAIL_ADDRESS' | translate }}" formControlName="email" />
+                <span class="help-block" *ngIf="registrationForm.controls['email'].hasError('pattern')">
+                  <small class="text-danger">{{
+                    "ENTER_A_VALID_EMAIL_ADDRESS" | translate
+                  }}</small>
+                </span>
+              </div>
+
+              <div class="form-group relative">
+                <label for="exampleInputEmail1">{{ "PASSWORD" | translate }}
+                  <span style="color: red">*</span></label>
+                <input type="password" class="form-control barlow-regular text-normal color-b" id="exampleInputpasswd"
+                  aria-describedby="emailHelp" placeholder="{{ 'ENTER_YOUR_PASSWORD' | translate }}"
+                  formControlName="password" />
+                <span class="help-block" *ngIf="
+                    registrationForm.controls['password'].hasError('minlength')
+                  ">
+                  <small class="text-danger">{{
+                    "MIN_PASS" | translate
+                  }}</small>
+                </span>
+                <span class="help-block" *ngIf="
+                    registrationForm.controls['password'].hasError('maxlength')
+                  ">
+                  <small class="text-danger">{{
+                    "MAX_PASS" | translate
+                  }}</small>
+                </span>
+                <!--                <img src="assets/icons/eye.png" class="absolute eye"/>-->
+              </div>
+
+              <br /><br />
+              <button type="submit" [disabled]="registrationForm.invalid" class="btn btn-warning sign-btn">
+                {{ "SIGN_UP" | translate }}
+              </button>
+            </form>
+            <br />
+            <form (ngSubmit)="verifyOTPNumber()" #otpForm="ngForm" autocomplete="off" *ngIf="isRegistered">
+              <p class="color-green" translate>{{ "OTP_SENT" | translate }}</p>
+              <div class="form-group">
+                <label for="exampleInputEmail1">{{ "OTP_ENTER" | translate
+                  }}<span style="color: #ff0000">*</span></label>
+                <input type="text" class="form-control barlow-regular text-normal color-b" id="otpInput"
+                  aria-describedby="emailHelp" placeholder="{{ 'OTP_ENTER' | translate }}" required name="OTP"
+                  [maxLength]="6" [minLength]="4" [(ngModel)]="otpInfo.otp" />
+              </div>
+
+              <br /><br />
+              <button type="submit" [disabled]="otpForm.invalid" class="btn btn-warning sign-btn">
+                {{ "VERIFY_OTP" | translate }}
+              </button>
+              <h6 class="text-medium color-b barlow-regular" *ngIf="otpSent == false">
+                {{ "RESEND_OTP_IN" }}
+                <span class="color-red">
+                  <countdown [config]="{ leftTime: 60 }" (event)="handleEvent($event)"></countdown>
+                </span>
+              </h6>
+              <br />
+              <br />
+              <button type="button" class="btn btn-warning sign-btn" (click)="resendOtp()" *ngIf="otpSent == true">
+                {{ "RESEND_OTP" | translate }}
+              </button>
+            </form>
+
+            <h6 class="text-center text-normal color-b-c barlow-regular my-3">
+              {{ "HAVE_GOT_AN_ACCOUNT" | translate
+              }}<span class="h1sm color-primary pointer" [routerLink]="['/login']">
+                &nbsp;{{ "LOG_IN" | translate }}</span>
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 welcome-banner text-center">
+        <img src="assets/images/register.png" class="img-fluid banner-img" />
+      </div>
+    </div>
+  </div>
+</div>

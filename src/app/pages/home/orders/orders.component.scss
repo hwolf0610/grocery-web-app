@@ -1,0 +1,77 @@
+.order-img {
+  height: 140px;
+  width: 100%;
+  border-radius: 5px;
+  //   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  img {
+    height: 117px;
+    width: 100%;
+    border-radius: 5px;
+  }
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background-color: green;
+  margin-top: 6px;
+}
+.vl {
+  border-left: 1px dashed green;
+
+  height: 46px;
+  margin-left: 4px;
+}
+.grey-dot {
+  @extend .dot;
+  background-color: #707070 !important;
+}
+.grey-vl {
+  @extend .vl;
+  border-left: 1px dashed #707070 !important;
+}
+.all-products {
+  height: 300px;
+  width: 100%;
+  overflow-y: scroll;
+  margin-top: 1em;
+  img {
+    width: 100px;
+    height: 67px;
+  }
+}
+.reorder-img {
+  height: auto;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 3px 40px #0000000a;
+  padding-top: 2.5rem;
+}
+
+.order-title {
+  @media screen and (max-width: 568px) {
+    font-size: 15px;
+  }
+}
+
+.small-title {
+  @media screen and (max-width: 568px) {
+    font-size: 11px;
+  }
+}
+.modal-body {
+  .close-button {
+    padding-top: 54px;
+    .close {
+      display: flex;
+      justify-content: flex-end;
+      background-color: white;
+      button {
+        outline: none !important;
+      }
+    }
+  }
+}
+.modal-backdrop.show {
+  opacity: 0 !important;
+}

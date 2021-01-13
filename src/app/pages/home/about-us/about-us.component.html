@@ -1,0 +1,59 @@
+<!-- <app-header-component></app-header-component> -->
+
+<div class="container-fluid color-lightblue footer-link">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div
+      class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar"
+      *ngIf="businessInfoList"
+    >
+      <div class="">
+        <div class="about-us">
+          <br /><br />
+          <h2 class="h1md barlow-semibold title">
+            {{ "ABOUT_US" | translate }}
+          </h2>
+          <div class="row store">
+            <div class="col-md-9">
+              <div class="">
+                <label>{{ "STORE_NAME" | translate }}</label>
+                &nbsp;<strong>{{ businessInfoList.storeName }} </strong>
+              </div>
+              <div class="">
+                <label>{{ "LOCATION" | translate }}</label>
+                &nbsp; <strong>{{ businessInfoList.officeLocation }} </strong>
+              </div>
+              <div class="">
+                <label>{{ "ADDRESS" | translate }}</label>
+                &nbsp; <strong>{{ businessInfoList.address }} </strong>
+              </div>
+              <div class="">
+                <label>{{ "PHONE_NUMBER" | translate }}</label>
+                &nbsp; <strong>{{ businessInfoList.phoneNumber }} </strong>
+              </div>
+              <div class="">
+                <label>{{ "EMAIL" | translate }}</label>
+                &nbsp; <strong>{{ businessInfoList.email }} </strong>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <img
+                class="text-center img-fluid about-img"
+                src="assets/images/webapp.png"
+              />
+            </div>
+          </div>
+          <br /><br />
+          <h4 class="text-normal barlow-regular preserveLineBreak">
+            {{ pageData.title }}
+          </h4>
+          <h6 [innerHTML]="pageData.description"></h6>
+          <app-footer></app-footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

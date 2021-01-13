@@ -1,0 +1,16 @@
+<div class="container-fluid color-lightblue footer-link">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br/><br/>
+      <br/><br/>
+      <div class="bottom-border">
+        <h5>{{ pageData.title }}</h5>
+      </div>
+      <p [innerHTML]="pageData.description"></p>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>

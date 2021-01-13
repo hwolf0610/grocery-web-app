@@ -1,0 +1,442 @@
+<div class="container-fluid color-lightblue saved-items-page">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <!-- <div class="app-bar">
+        <app-header-component></app-header-component>
+      </div> -->
+
+      <br /><br />
+      <br /><br />
+
+      <div class="row">
+        <div class="col-md-6 col-xl-6 col-lg-12 mb-5">
+          <div class="profile-block radius-8 bg-white p-4">
+            <div class="row mt-4">
+              <div class="col-md-4 col-6" *ngIf="profileInfo.imageUrl">
+                <div class="profile-img">
+                  <ng-container *ngIf="!profileInfo.filePath">
+                    <img [src]="profileInfo.imageUrl" (error)="profileInfo.imageUrl = defaultProfilePic"
+                      class="avatar" />
+                  </ng-container>
+                  <ng-container *ngIf="profileInfo.filePath">
+                    <img [src]="profileImage + profileInfo.filePath" class="avatar" />
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-md-7 col-6">
+                <h6 class="barlow-medium text-big prod-name">
+                  {{ profileInfo.firstName }}&nbsp;{{ profileInfo.lastName }}
+                </h6>
+                <h6 class="barlow-medium text-normal color-b-c emailblock prod-desc">
+                  {{ profileInfo.email }}
+                </h6>
+                <h6 class="barlow-medium text-normal color-b-c">
+                  {{ profileInfo.mobileNumber }}
+                </h6>
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small main-title"
+                  [routerLink]="['/wallet']">
+                  {{ "WALLET" | translate }}
+                </button>
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small main-title"
+                  (click)="openProfileUpdateModal(content)">
+                  {{ "EDIT_PROFILE" | translate }}
+                </button>
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small main-title"
+                  (click)="openProfileMobileNumberUpdateModal(mobileNumber)">
+                  {{ "EDIT_MOBILE_NUMBER" | translate }}
+                </button>
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small main-title"
+                  (click)="openChangePasswordModal(changePasswordModal)">
+                  {{ "CHANGE_PASSWORD" | translate }}
+                </button>
+              </div>
+            </div>
+            <br />
+            <hr />
+            <br />
+            <div class="row">
+              <div class="col-md-4 col-4 text-center showPointer" routerLink="/orders">
+                <div class="profile-settings">
+                  <img src="assets/icons/clock.png" />
+                </div>
+                <h6 class="barlow-regular text-normal main-title">
+                  {{ "ORDER_HISTORY" | translate }}
+                </h6>
+              </div>
+              <div class="col-md-4 col-4 text-center showPointer" (click)="navigateToChat()">
+                <div class="profile-settings-card">
+                  <img src="assets/icons/card.png" />
+                </div>
+                <h6 class="barlow-regular text-normal main-title">
+                  {{ "CHAT" | translate }}
+                </h6>
+              </div>
+              <div class="col-md-4 col-4 text-center showPointer" (click)="clearSessionAndLogout()">
+                <div class="profile-settings-logout">
+                  <img src="assets/icons/lgout.png" />
+                </div>
+                <h6 class="barlow-regular text-normal main-title">
+                  {{ "LOG_OUT" | translate }}
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-xl-4 col-lg-6">
+          <div class="delievry-address radius-10 bg-white p-3">
+            <h6 class="text-normal barlow-bold mb-3 main-title">
+              {{ "SAVED_ADDRESSES" | translate }}
+            </h6>
+            <h6 class="text-center color-green" *ngIf="addressList.length === 0">{{"NO_ADDRESS" | translate}}</h6>
+            <ng-container *ngFor="let address of addressList">
+              <div class="custom-control custom-radio">
+                <input type="radio" [id]="address._id" [name]="address._id" class="custom-control-input"
+                  (change)="selectedAddress = address"
+                  [checked]="selectedAddress ? selectedAddress._id === address._id : false" />
+                <label class="custom-control-label barlow-regular color-b-c smaller-text pointer" [for]="address._id">
+                  {{address.flatNo}},{{address.apartmentName}},{{ address.address }}
+                </label>
+              </div>
+              <br />
+            </ng-container>
+            <div class="row text-center" *ngIf="addressList.length > 0">
+              <div class="col-md-5 offset-md-1 col-6">
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small" [disabled]="!selectedAddress"
+                  (click)="openAddressModal(addressModal)">
+                  {{ "EDIT" | translate }}
+                </button>
+              </div>
+              <div class="col-md-5 col-6">
+                <button type="button" class="btn btn-outline-dark w-100 mt-4 text-small" [disabled]="!selectedAddress"
+                  (click)="deleteAddress()">
+                  {{ "DELETE" | translate }}
+                </button>
+              </div>
+            </div>
+            <hr />
+
+            <br />
+            <br /><br />
+            <button type="button" class="btn btn-outline-dark w-100 mb-4 barlow-regular color-b-b"
+              (click)="selectedAddress = undefined;openAddressModal(addressModal)">
+              {{ "ADD_NEW_ADDRESS" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <br /><br />
+
+      <br /><br />
+      <app-footer></app-footer>
+    </div>
+  </div>
+
+  <!-- edit profile modal -->
+  <br /><br /><br /><br />
+
+  <ng-template #content let-modal>
+    <br />
+    <br />
+    <br /><br /><br /><br />
+    <div class="modal-body">
+      <div class="row add-profile">
+        <div class="col-md-5">
+          <div class="profile-img">
+            <img [src]="profileUpdateForm.controls['imageUrl'].value"
+              *ngIf="profileUpdateForm.controls['imageUrl'].value" class="prof-img" />
+            <a class="showPointer" (click)="openFilePicker()"><img src="assets/icons/camera.png" class="camera" /></a>
+            <input type="file" accept="image/*" style="display: none;" id="file-picker" (change)="readImage($event)" />
+          </div>
+          <h6 class="barlow-regular color-b-c text-normal text-center mt-4">
+            <!--            {{profileInfo.email}}-->
+          </h6>
+        </div>
+
+        <div class="col-md-7">
+          <form (ngSubmit)="updateProfile()" [formGroup]="profileUpdateForm">
+            <div class="form-group mx-2">
+              <label for="exampleInputEmail1" class="barlow-regular color-b-c text-small">
+                {{ "FIRST_NAME" | translate }}
+              </label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="{{ 'F_NAME' | translate }}" formControlName="firstName" />
+            </div>
+            <div class="form-group mx-2">
+              <label for="exampleInputEmail1" class="barlow-regular color-b-c text-small">{{ "LAST_NAME" | translate }}
+              </label>
+              <input type="email" class="form-control" id="exampleInpsutEmail1" aria-describedby="emailHelp"
+                placeholder="{{ 'L_NAME' | translate }}" formControlName="lastName" />
+            </div>
+            <div class="form-group mx-2">
+              <label for="exampleInputEmail1" class="barlow-regular color-b-c text-small">{{ "EMAIL" | translate }}
+              </label>
+              <input type="email" class="form-control" id="exampleInpsutEmail1" aria-describedby="emailHelp"
+                placeholder="{{ 'EMAIL' | translate }}" formControlName="email" />
+            </div>
+            <!-- <div class="form-group mx-2">
+              <label for="exampleInputEmail1"
+                class="barlow-regular color-b-c text-small">{{ "MOBILE_NUMBER" | translate }}
+              </label>
+              <input type="number" class="form-control" id="exampleInpsutEmasasil1" aria-describedby="emailHelp"
+                placeholder="{{ 'M_NUM' | translate }}" formControlName="mobileNumber" />
+            </div> -->
+
+            <br />
+            <div class="row">
+              <div class="col-md-5 mb-4 col-6">
+                <button type="button" class="btn btn-outline-dark w-100" (click)="closeModal()">
+                  {{ "CANCEL" | translate }}
+                </button>
+              </div>
+              <div class="col-md-7 col-6">
+                <button type="submit" [disabled]="profileUpdateForm.invalid || isDisabled"
+                  class="btn btn-warning w-100">
+                  {{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+  </ng-template>
+  <br /><br /><br /><br />
+  <br /><br /><br /><br />
+
+  <ng-template #mobileNumber let-modal>
+    <br />
+    <br />
+    <br /><br /><br /><br />
+    <div class="modal-body">
+      <div class="row add-profile">
+
+        <div class="col-md-7">
+          <form (ngSubmit)="updateMobileNumber()" [formGroup]="profileUpdateForm">
+            <div class="form-group mx-2" *ngIf="verifyMobileNumber===false">
+              <label for="exampleInputEmail1"
+                class="barlow-regular color-b-c text-small">{{ "MOBILE_NUMBER" | translate }}
+              </label>
+              <input type="number" class="form-control" id="exampleInpsutEmasasil1" aria-describedby="emailHelp"
+                placeholder="{{ 'M_NUM' | translate }}" formControlName="mobileNumber" />
+            </div>
+            <br />
+            <div class="row" *ngIf="verifyMobileNumber===false">
+              <div class="col-md-5 mb-4 col-6">
+                <button type="button" class="btn btn-outline-dark w-100" (click)="closeModal()">
+                  {{ "CANCEL" | translate }}
+                </button>
+              </div>
+              <div class="col-md-7 col-6">
+                <button type="submit" [disabled]="profileUpdateForm.invalid || isDisabled"
+                  class="btn btn-warning w-100">
+                  {{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+          <form (ngSubmit)="verifyOTPNumber()" #otpForm="ngForm" autocomplete="off" *ngIf="verifyMobileNumber">
+            <p class="color-green" translate>{{ "OTP_SENT" | translate }}</p>
+            <div class="form-group">
+              <label for="exampleInputEmail1">{{ "OTP_ENTER" | translate }}<span
+                  style="color: #ff0000;">*</span></label>
+              <input type="text" class="form-control  barlow-regular text-normal color-b" id="otpInput"
+                aria-describedby="emailHelp" placeholder="{{ 'OTP_ENTER' | translate }}" required name="OTP"
+                [maxLength]="6" [minLength]="4" [(ngModel)]="otpInfo.otp" />
+
+            </div>
+
+            <br /><br />
+            <button type="submit" [disabled]="otpForm.invalid" class="btn btn-warning sign-btn">
+              {{ "VERIFY_OTP" | translate }}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <br /><br />
+  </ng-template>
+  <br /><br /><br /><br />
+  <br /><br /><br /><br />
+  <ng-template #addressModal let-modal>
+    <br /><br /><br /><br />
+
+    <div class="modal-body">
+      <div class="row add-profile">
+        <div class="col-md-12">
+          <h6 class="barlow-medium color-b-c text-big text-center main-title">
+            {{addressId ? ("UPDATE_DELIVERY_ADDRESS" | translate) : ("ADD_NEW_DELIVERY_ADDRESS" | translate)}}
+          </h6>
+          <p class="text-info mt-2" *ngIf="showMap">{{"MARKER_NOTE" | translate}}</p>
+          <agm-map [latitude]="location.lat" [longitude]="location.lng" [zoom]="17" [mapDraggable]="true"
+            *ngIf="showMap">
+            <agm-marker [latitude]="location.lat" [longitude]="location.lng"
+              (dragEnd)="markerDraggedEvent($event.coords)" [markerDraggable]="true">
+              <agm-info-window>
+                {{mapAddress}}
+              </agm-info-window>
+            </agm-marker>
+          </agm-map>
+          <p class="mt-3" *ngIf="showMap">{{mapAddress}}</p>
+          <form (ngSubmit)="geoCodeAddress()" #addressForm="ngForm" class="mx-4 mt-5" *ngIf="!showMap">
+            <div class="row form-group">
+              <input type="text" name="address" class="form-control" [(ngModel)]="addressData.address"
+                placeholder="{{ 'ENTER_YOUR_ADDRESS' | translate }}" required />
+              <p class="showPointer text-info" (click)="setMapShowStatus()" *ngIf="!hideEdit">
+                {{"EDIT" | translate}}
+              </p>
+            </div>
+            <div class="row form-group">
+              <input type="text" name="flatNo" class="form-control" [(ngModel)]="addressData.flatNo"
+                placeholder="{{ 'ENTER_YOUR_FLAT_NUMBER' | translate }}" required />
+            </div>
+            <div class="row form-group">
+              <input type="text" name="apartmentName" class="form-control" [(ngModel)]="addressData.apartmentName"
+                placeholder="{{ 'ENTER_YOUR_APARTMENT_NAME' | translate }}" required />
+            </div>
+            <div class="row form-group">
+              <input type="text" name="landmark" class="form-control" [(ngModel)]="addressData.landmark"
+                placeholder="{{ 'ENTER_THE_NEAREST_LANDMARK' | translate }}" required />
+            </div>
+            <div class="row form-group">
+              <input type="text" name="postalCode" class="form-control" [(ngModel)]="addressData.postalCode"
+                placeholder="{{ 'ENTER_YOUR_POSTAL_CODE' | translate }}" required />
+            </div>
+            <div class="row form-group mt-3">
+              <input type="text" name="contactNumber" class="form-control" [(ngModel)]="addressData.mobileNumber"
+                placeholder="{{ 'ENTER_YOUR_CONTACT_NUMBER' | translate }}" required />
+            </div>
+
+            <div class="row">
+              <div class="custom-control custom-radio ml-5" *ngFor="let type of addressTypes">
+                <input type="radio" [id]="type" name="home" [(ngModel)]="addressData.addressType" [value]="type"
+                  class="custom-control-input" />
+                <label class="custom-control-label barlow-regular color-b-c text-md" [for]="type">{{type}}
+                </label>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md-6 mb-0">
+                <button class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3" type="button"
+                  (click)="closeAddressModal()">
+                  {{ "CANCEL" | translate }}
+                </button>
+              </div>
+              <div class="col-md-6" *ngIf="!showMap">
+                <button class="btn btn-warning w-100 barlow-medium text-smaller" type="submit"
+                  [disabled]="addressForm.invalid">
+                  {{ "SUBMIT" | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+          <div class="row mt-3" *ngIf="showMap">
+            <div class="col-md-6 mb-0" *ngIf="addressId">
+              <button class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3" type="button"
+                (click)="showMap = !showMap;hideEdit = false">
+                {{ "CANCEL" | translate }}
+              </button>
+            </div>
+            <div class="col-md-6 float-right">
+              <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button" (click)="setMapAddress()">
+                {{ "PROCEED" | translate }}
+              </button>
+            </div>
+            <div class="col-md-6 float-right">
+              <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+                (click)="closeAddressModal()">
+                {{ "CANCEL" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #changePasswordModal let-modal>
+    <div class="modal-body">
+      <div class="row add-profile">
+        <div class="col-md-12">
+          <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm">
+            <div class="form-group mx-2">
+              <label for="exampleInputEmail1"
+                class="barlow-regular color-b-c text-small">{{ "CURRENT_PASSWORD" | translate }}
+              </label>
+              <input type="password" class="form-control" aria-describedby="emailHelp"
+                formControlName="currentPassword" />
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['currentPassword'].dirty && changePasswordForm.controls['currentPassword'].errors?.minlength">
+                <small class="text-danger">
+                  {{"MIN_PASS" | translate}}
+                </small>
+              </span>
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['currentPassword'].dirty && changePasswordForm.controls['currentPassword'].errors?.maxlength">
+                <small class="text-danger">
+                  {{"MAX_PASS" | translate}}
+                </small>
+              </span>
+            </div>
+            <div class="form-group mx-2">
+              <label for="exampleInputEmail1" class="barlow-regular color-b-c text-small">{{ "PASSWORD" | translate }}
+              </label>
+              <input type="password" class="form-control" aria-describedby="emailHelp" formControlName="newPassword" />
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['newPassword'].dirty && changePasswordForm.controls['newPassword'].errors?.minlength">
+                <small class="text-danger">
+                  {{"MIN_PASS" | translate}}
+                </small>
+              </span>
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['newPassword'].dirty && changePasswordForm.controls['newPassword'].value === changePasswordForm.controls['currentPassword'].value">
+                <small class="text-danger">
+                  {{"SAME_PASS_ISSUE" | translate}}
+                </small>
+              </span>
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['newPassword'].dirty && changePasswordForm.controls['newPassword'].errors?.maxlength">
+                <small class="text-danger">
+                  {{"MAX_PASS" | translate}}
+                </small>
+              </span>
+            </div>
+            <div class="form-group mx-2" *ngIf="changePasswordForm.controls['newPassword']?.value?.length > 0">
+              <label for="exampleInputEmail1"
+                class="barlow-regular color-b-c text-small">{{ "CONFIRM_YOUR_PASSWORD" | translate }}
+              </label>
+              <input type="password" class="form-control" aria-describedby="emailHelp"
+                formControlName="confirmPassword" />
+              <span class="help-block"
+                *ngIf="changePasswordForm.controls['confirmPassword'].dirty && changePasswordForm.controls['confirmPassword'].value !== changePasswordForm.controls['newPassword'].value">
+                <small class="text-danger">
+                  {{"PASSWORD_DO_NOT_MATCH" | translate}}
+                </small>
+              </span>
+            </div>
+
+            <br />
+            <div class="row">
+              <div class="col-md-5 mb-4 col-6">
+                <button type="button" class="btn btn-outline-dark w-100" (click)="closeChangePasswordModal()">
+                  {{ "CANCEL" | translate }}
+                </button>
+              </div>
+              <div class="col-md-7 col-6">
+                <button type="submit"
+                  [disabled]="changePasswordForm.invalid || isDisabled || changePasswordForm.controls['newPassword'].value === changePasswordForm.controls['currentPassword'].value || changePasswordForm.controls['confirmPassword'].dirty && changePasswordForm.controls['confirmPassword'].value !== changePasswordForm.controls['newPassword'].value"
+                  class="btn btn-warning w-100">
+                  {{ "SAVE" | translate }}
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

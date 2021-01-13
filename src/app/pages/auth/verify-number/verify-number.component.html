@@ -1,0 +1,52 @@
+<div class="auth-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-9 offset-md-1">
+            <img src="assets/icons/logo.png" class="logo" />
+
+            <h5 class="h1xl barlow-semibold">Verify your number</h5>
+            <h6 class="text-medium barlow-regular color-b-d mb-5">
+              W have send a 4 digit verification code to
+              <br />
+              <span class="color-green">+91 98 6766 4312</span>
+            </h6>
+
+            <h6 class="text-md color-b-c barlow-regular">Verification code</h6>
+
+            <div class="row">
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+              <div class="col-md-3 col-6 mb-3">
+                <input type="text" class="reset-block" />
+              </div>
+            </div>
+            <h6 class="text-medium color-b barlow-regular">
+              Resend OTP in <span class="color-red">00:52 s</span>
+            </h6>
+
+            <br /><br />
+            <button
+              type="button"
+              class="btn btn-warning sign-btn"
+              [routerLink]="['/welcome']"
+            >
+              Submit OTP
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 welcome-banner text-center">
+        <img src="assets/images/startup.png" class="img-fluid banner-img " />
+      </div>
+    </div>
+  </div>
+</div>

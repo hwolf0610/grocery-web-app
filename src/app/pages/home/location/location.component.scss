@@ -1,0 +1,46 @@
+.map-block {
+  height: 506px;
+}
+
+.form-control {
+  height: 64px;
+  box-shadow: 0px 3px 6px #00000029;
+  padding: 0 4rem;
+  background-color: white;
+}
+
+.search {
+  top: 17px;
+  left: 15px;
+}
+.form {
+  position: absolute;
+  width: 82%;
+  top: 4rem;
+  margin: 0 3rem;
+  @media screen and (max-width: 768px) {
+    width: 70%;
+
+    // margin: 0 3rem;
+  }
+}
+.logo {
+  margin-left: 4.5rem;
+}
+.current-location {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  height: 103px;
+  padding: 26px;
+}
+.address-form {
+  .form-control {
+    border-radius: 5px;
+    background-color: #f5f7f9;
+    height: 45px;
+    box-shadow: none;
+  }
+}
+.btn {
+  height: 55px;
+}

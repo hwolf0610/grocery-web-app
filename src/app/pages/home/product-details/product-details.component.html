@@ -1,0 +1,347 @@
+<div class="container-fluid color-lightblue product-details">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br />
+      <br />
+      <div class="bottom-border"></div>
+
+      <br /><br />
+      <!-- product details page -->
+
+      <div class="product-page">
+        <div class="row">
+          <div class="col-md-6 col-lg-12 col-xl-6">
+            <div class="row">
+              <div class="col-md-12 mb-4">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="product-image">
+                      <div class="row">
+                        <div class="col-md-12 col-12">
+                          <ng-container *ngIf="!productData.productImages || productData.productImages.length === 0">
+                            <img
+                              [src]="productData.filePath ? productImageUrl + productData.filePath : productData.imageUrl"
+                              class="" />
+                          </ng-container>
+
+                          <ng-container *ngIf="productData.productImages && productData.productImages.length > 0">
+                            <owl-carousel-o [options]="customOptions">
+                              <ng-container *ngFor="let image of productData.productImages">
+                                <ng-template carouselSlide>
+                                  <img [src]="image.filePath ? productImageUrl + image.filePath : image.imageUrl" />
+                                </ng-template>
+                              </ng-container>
+                            </owl-carousel-o>
+                          </ng-container>
+                        </div>
+                        <div class="col-md-12 col-4">
+                          <div class="row" *ngIf="isLoggedIn">
+                            <div class="col-md-2 offset-md-10 text-right mt-4">
+                              <ng-container class="text-center pt-3 product-image" *ngIf="productData.isFavourite">
+                                <a class="showPointer favourite" (click)="removeFromFavourite()">
+                                  <i class="fa fa-heart pt-2 color-red"></i></a>
+                              </ng-container>
+                              <ng-container class="text-center pt-3" *ngIf="productData.isFavourite === false">
+                                <a class="showPointer favourite" (click)="addToFavourite()"><i
+                                    class="fa fa-heart-o"></i></a>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="product-name">
+                  <div class="row">
+                    <div class="col-md-6 col-9">
+                      <h2 class="h1sm barlow-medium color-b prod-name">
+                        {{
+                          productData.title.length > 16
+                            ? (productData.title | slice: 0:16) + "..."
+                            : productData.title
+                        }}
+                      </h2>
+                      <h6 class="barlow-regular color-b-c text-md prod-desc">
+                        {{ productData.description }}
+                      </h6>
+                    </div>
+
+                    <div class="col-md-6 text-right col-3">
+                      <h6 *ngIf="productData.averageRating">
+                        <ngb-rating [rate]="productData.averageRating" [readonly]="true" [max]="5">
+                          <ng-template let-fill="fill" let-index="index">
+                            <span class="star" [class.full]="fill === 100">
+                              <span class="half" [style.width.%]="fill">&#9733;</span>&#9733;
+                            </span>
+                          </ng-template>
+                        </ngb-rating>
+
+                        ({{ productData.noOfUsersRated }})
+                      </h6>
+                      <ng-container *ngIf="
+                          productData.isDealAvailable &&
+                          productData.variant.length > 0
+                        ">
+                        <ng-container *ngIf="!selectedVariant">
+                          <h5 class="color-b-c barlow-regular text-big prod-price">
+                            <del>{{
+                              productData.variant[0].price
+                                | currency: currencyCode:"symbol":"1.2-2"
+                            }}</del>
+                            &nbsp;
+                            <span class="color-green barlow-bold text-big prod-price"
+                              *ngIf="productData.variant.length > 0">
+                              {{
+                                productData.variant[0].discountAmount
+                                  | currency: currencyCode:"symbol":"1.2-2"
+                              }}
+                            </span>
+                          </h5>
+                        </ng-container>
+                        <ng-container *ngIf="selectedVariant">
+                          <h5 class="color-b-c barlow-regular text-big prod-price">
+                            <del>{{
+                              selectedVariant.price
+                                | currency: currencyCode:"symbol":"1.2-2"
+                            }}</del>
+                            &nbsp;
+
+                            <span class="color-green barlow-bold text-big prod-price"
+                              *ngIf="productData.variant.length > 0">
+                              {{
+                                selectedVariant.discountAmount
+                                  | currency: currencyCode:"symbol":"1.2-2"
+                              }}
+                            </span>
+                          </h5>
+                        </ng-container>
+                      </ng-container>
+                      <ng-container *ngIf="
+                          !productData.isDealAvailable &&
+                          productData.variant.length > 0
+                        ">
+                        <ng-container *ngIf="!selectedVariant">
+                          <h5 class="color-green barlow-bold text-big prod-price"
+                            *ngIf="productData.variant.length > 0">
+                            {{
+                              productData.variant[0].price
+                                | currency: currencyCode:"symbol":"1.2-2"
+                            }}
+                          </h5>
+                        </ng-container>
+                        <ng-container *ngIf="selectedVariant">
+                          <h5 class="color-green barlow-bold text-big prod-price"
+                            *ngIf="productData.variant.length > 0">
+                            {{
+                              selectedVariant.price
+                                | currency: currencyCode:"symbol":"1.2-2"
+                            }}
+                          </h5>
+                        </ng-container>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <!--                  <div class="row" *ngIf="isLoggedIn && productData.isRated === false">-->
+                  <!--                    <div class="col-md-4">-->
+                  <!--                      <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"-->
+                  <!--                              (click)="openRateModal(ratecontent)">-->
+                  <!--                        {{ "RATE_PRODUCT" | translate }}-->
+                  <!--                      </button>-->
+                  <!--                    </div>-->
+                  <!--                  </div>-->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 offset-md-2 col-lg-8 col-xl-4">
+            <div class="quantity-block">
+              <h6 class="barlow-bold text-normal prod-name">
+                {{ "CHOOSE_QUANTITY" | translate }}
+              </h6>
+              <div class="row" *ngFor="let variant of productData.variant">
+                <div class="col-md-4 col-4">
+                  <h5 class="barlow-regular color-b-c text-medium prod-price">
+                    {{ variant.unit }}
+                  </h5>
+                </div>
+                <div class="col-md-8 col-8">
+                  <p *ngIf="variant.productStock === 0" class="color-red mt-1">
+                    {{ "OUT_OF_STOCK" | translate }}
+                  </p>
+                  <label class="container customcheck text-medium color-b-c barlow-regular pointer prod-price"
+                    *ngIf="variant.productStock > 0">
+                    (
+                    {{
+                      (productData.isDealAvailable
+                        ? variant.discountAmount
+                        : variant.price
+                      ) | currency: currencyCode:"symbol":"1.2-2"
+                    }}
+                    )
+                    <input type="checkbox" (change)="setSelectedVariant(checked.checked, variant)" [checked]="
+                        selectedVariant
+                          ? variant._id === selectedVariant._id
+                          : false
+                      " #checked />
+                    <span class="checkmark"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row mt-4">
+                <div class="col-md-12 col-6">
+                  <div class="quantity mb-4">
+                    <a class="showPointer" (click)="changeQuantity('decrement')"><img
+                        src="assets/icons/minus.svg" /></a>
+                    <h6 class="barlow-regular text-smallest color-b pt-1">
+                      {{ selectedQuantity }}
+                    </h6>
+                    <a class="showPointer" (click)="changeQuantity('increment')"><img src="assets/icons/plus.svg" /></a>
+                  </div>
+                </div>
+                <div class="col-md-12 col-6">
+                  <div class="" *ngIf="selectedVariant">
+                    <div class="row">
+                      <div class="col-md-9 col-lg-12 col-xl-9">
+                        <div class="checkout-button">
+                          <div class="row checkout-block">
+                            <div class="col-md-4 col-5 checkout-subtotal checkout-sections">
+                              <div class="bg-color-b subtotal-price text-center">
+                                <h6 class="barlow-regular color-w smaller-text m-0 pt-1">
+                                  1
+                                  {{ "ITEM" | translate }}
+                                </h6>
+                                <p class="barlow-bold color-w smaller-text m-0">
+                                  {{
+                                    grandTotal
+                                      ? (grandTotal
+                                        | currency
+                                          : currencyCode
+                                          : "symbol"
+                                          : "1.2-2")
+                                      : null
+                                  }}<span class="barlow-medium"></span>
+                                </p>
+                              </div>
+                            </div>
+                            <div class="col-md-8 col-6 mt-1 pt-2 pointer checkout-subtotal checkout-sections add-cart">
+                              <h6 class="smaller-text barlow-regular text-center" (click)="addToCart()">
+                                {{ "ADD_TO_CART" | translate }}
+                                &nbsp;<span><img src="assets/icons/cart.png" class="small-cart" /></span>
+                              </h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+
+      <div class="text-center carosuel-list mt-4 pb-4">
+        <owl-carousel-o [options]="limitedOffers">
+          <ng-container *ngFor="let product of relatedProducts">
+            <ng-template carouselSlide>
+              <div class="row py-2">
+                <div class="col-md-11">
+                  <div class="bg-white radius-10 p-2">
+                    <div class="row" [routerLink]="['/product-details', product._id]">
+                      <div class="col-md-5 col-4">
+                        <div class="frequent-img showPointer">
+                          <ng-container>
+                            <img
+                              [src]="product.productImages && product.productImages.length > 0 ? (product.productImages[0].filePath ? productCarouselImageUrl+product.productImages[0].filePath : product.productImages[0].imageUrl) : (product.filePath ? productCarouselImageUrl+product.filePath : product.imageUrl)" />
+                          </ng-container>
+
+                        </div>
+                        <div class="user-ratings" *ngIf="product.averageRating">
+                          <span class="">
+                            <h6 class="barlow-medium">
+                              {{ product.averageRating.toFixed(1) }}
+                              <span><i class="fa fa-star"></i> </span>
+                            </h6>
+                          </span>
+                        </div>
+                      </div>
+
+                      <div class="col-md-7 col-8 text-left">
+                        <h6 class="text-md barlow-semibold showPointer m-0 product-details-title main-title">
+                          {{ product.title }}
+                        </h6>
+                        <!--                        <h6 class="barlow-regular color-b-c text-14 showPointer m-0 prod-desc product-details-description">-->
+                        <!--                          {{-->
+                        <!--                          product.description.length < 25-->
+                        <!--                            ? product.description-->
+                        <!--                            : (product.description | slice: 0:25) + "..."-->
+                        <!--                          }}-->
+                        <!--                        </h6>-->
+
+                        <p class="color-green barlow-bold text-normal m-0 prod-price">
+                          {{
+                            product.variant[0].price
+                              | currency: currencyCode:"symbol":"1.2-2"
+                          }}
+                          <span class="barlow-medium"></span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
+<ng-template #ratecontent let-modal>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <h6 class="barlow-medium color-red text-big text-center">
+          {{ "RATE_PRODUCT" | translate }}
+        </h6>
+        <div class="row text-center my-2">
+          <div class="col-md-12">
+            <ngb-rating class="ngb-ratingbar" [(rate)]="rateData.rate" [max]="5" required></ngb-rating>
+          </div>
+        </div>
+        <div class="row text-center my-2">
+          <div class="col-md-12">
+            <textarea class="form-control" [(ngModel)]="rateData.description" name="description"></textarea>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <button class="btn btn-outline-dark w-100 barlow-medium text-smaller mb-3" type="button"
+              (click)="closeRateModal()">
+              {{ "CANCEL" | translate }}
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-warning w-100 barlow-medium text-smaller" type="button"
+              [disabled]="rateData.rate === 0" (click)="rateProduct()">
+              {{ "SUBMIT" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,51 @@
+<div class="container-fluid color-lightblue rating-section">
+  <div class="row">
+    <div class="col-md-2 col-lg-3 col-xl-2 side-menu">
+      <app-side-menu></app-side-menu>
+    </div>
+    <div class="col-md-10 col-lg-9 col-xl-10 mt-4 main-bar">
+      <br /><br />
+      <br /><br />
+
+      <div class="row">
+        <div class="col-md-9 text-center">
+          <div class="delivery-block">
+            <img src="assets/images/delivery.png" class="delivery-img" />
+            <br />
+
+            <div class="row">
+              <div class="col-md-8 offset-md-2">
+                <h6 class="barlow-medium text-md mt-4">
+                  {{"YOUR_ORDER_WAS_DELIVERED_BY"|translate}}{{orderInfo.assignedToName}}
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="feedback-block">
+            <h6 class="barlow-bold text-md p-3">
+              {{"PLEASE_SUBMIT_YOUR_FEEDBACK"|translate}}
+            </h6>
+            <hr class="m-0" />
+            <div class="ratings my-4 text-center">
+              <ngb-rating class="ngb-ratingbar" [(rate)]="rateData.rate" [max]="5"></ngb-rating>
+            </div>
+            <div class="form-group px-3">
+              <textarea class="form-control custom-textarea barlow-regular smaller-text color-b-c" rows="8"
+                placeholder="{{'TELL_US_YOUR_EXPERIENCE'|translate}}" [(ngModel)]="rateData.description"></textarea>
+            </div>
+            <div class="submit-button px-3 mt-5">
+              <button class="btn feedback-btn" type="button"
+                [disabled]="rateData.rate === 0 ||rateData.description===''" (click)="rateDelivaryBoy()">
+                {{ "SUBMIT" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
+</div>
